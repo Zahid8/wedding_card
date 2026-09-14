@@ -27,7 +27,7 @@ export function CoupleCards() {
                 alt={p.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
-                className={`object-contain object-bottom ${p.right ? "" : "-scale-x-100"}`}
+                className="object-contain object-bottom -scale-x-100"
               />
             </div>
             <div className="mt-6">

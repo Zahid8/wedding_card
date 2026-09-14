@@ -24,13 +24,19 @@ export type WeddingEvent = {
   venue: Venue;
 };
 
-const q = (s: string) => encodeURIComponent(s).replace(/%20/g, "+");
-const venue = (name: string, line1: string, line2: string): Venue => ({
+const venue = (
+  name: string,
+  line1: string,
+  line2: string,
+  share: string,
+  lat: number,
+  lng: number,
+): Venue => ({
   name,
   line1,
   line2,
-  mapsSearch: `https://www.google.com/maps/search/${q(`${name} ${line1} ${line2}`)}`,
-  mapsEmbed: `https://www.google.com/maps?q=${q(`${name} ${line1} ${line2}`)}&output=embed`,
+  mapsSearch: share,
+  mapsEmbed: `https://www.google.com/maps?q=${lat},${lng}&z=16&output=embed`,
 });
 
 export const events: readonly WeddingEvent[] = [
@@ -49,7 +55,14 @@ export const events: readonly WeddingEvent[] = [
     meridiem: "PM",
     iso: "2026-09-25T20:00:00+05:30",
     display: "Friday, September 25, 2026",
-    venue: venue("Inam Vihar", "Ghaziabad", "Uttar Pradesh"),
+    venue: venue(
+      "Inam Vihar",
+      "Q728, Chowk, beside Sabhapur, Sarad City",
+      "Ghaziabad, Uttar Pradesh 201102",
+      "https://maps.app.goo.gl/xdrf39gD6iEx98Dg8",
+      28.7524674,
+      77.265702,
+    ),
   },
   {
     id: "walima",
@@ -66,7 +79,14 @@ export const events: readonly WeddingEvent[] = [
     meridiem: "PM",
     iso: "2026-09-26T20:00:00+05:30",
     display: "Saturday, September 26, 2026",
-    venue: venue("JMD Garden", "Aya Nagar, Arjangarh", "New Delhi"),
+    venue: venue(
+      "JMD Garden",
+      "Aya Nagar, Arjangarh",
+      "New Delhi",
+      "https://maps.app.goo.gl/mTbT1uNjGQDaoSqM9",
+      28.472253,
+      77.1345345,
+    ),
   },
 ] as const;
 
@@ -99,9 +119,8 @@ export const site = {
     range: "25 & 26 September 2026",
   },
   venue: nikah.venue,
-  /** TODO: real contact number. Leave empty to hide phone buttons. */
-  contactPhone: "" as string,
-  contactPhoneTel: "" as string,
+  contactPhone: "+91 84473 71925",
+  contactPhoneTel: "+918447371925",
   rsvpDeadline: "September 20, 2026",
   credit: "designed with love",
   nav: [
@@ -110,7 +129,6 @@ export const site = {
     { href: "/schedule", label: "Schedule" },
     { href: "/rsvp", label: "RSVP" },
     { href: "/travel", label: "Travel" },
-    { href: "/faqs", label: "FAQs" },
   ],
 } as const;
 
@@ -212,10 +230,6 @@ export const schedule = {
       desc: "An evening of celebration and a lavish dinner with family and friends",
     },
   ],
-  dressCode: {
-    title: "Traditional & Elegant",
-    body: "We invite you to dress in your finest traditional attire or formal wear. Let's make this celebration as colorful and joyous as our love!",
-  },
 } as const;
 
 export const rsvpCopy = {
@@ -288,61 +302,5 @@ export const travel = {
   assistance: {
     title: "Need Travel Assistance?",
     body: "If you need help with travel arrangements or have any questions, please don't hesitate to reach out.",
-  },
-} as const;
-
-export const faqs = {
-  heading: "Frequently Asked Questions",
-  subtitle:
-    "Have questions about our wedding? Here are answers to some common queries. If you can't find what you're looking for, don't hesitate to reach out!",
-  items: [
-    {
-      q: "When should I RSVP by?",
-      a: "Please RSVP by September 20, 2026, so we can finalize our arrangements. We would love to know if you can join us as early as possible!",
-    },
-    {
-      q: "Are there two events?",
-      a: "Yes. The Nikah is on Friday, September 25, 2026 at 8 PM at Inam Vihar, Ghaziabad. The Walima is on Saturday, September 26, 2026 at 8 PM at JMD Garden, Aya Nagar, Arjangarh, New Delhi. You are warmly invited to both.",
-    },
-    {
-      q: "What should I wear?",
-      a: "We encourage traditional and elegant attire. Ladies may wear sarees, lehengas, or formal suits, while gentlemen may wear sherwanis, kurta-pajamas, or formal suits. Feel free to dress in colorful and festive outfits!",
-    },
-    {
-      q: "Can I bring a plus one?",
-      a: "Due to venue capacity, we kindly ask that you only bring guests who have been specifically named on your invitation. If you have any questions about your invitation, please contact us directly.",
-    },
-    {
-      q: "Will there be parking available?",
-      a: "Yes, parking will be available at both venues. We recommend arriving a little early, or using a cab or the metro, as parking near the venues can fill up.",
-    },
-    {
-      q: "Is the venue wheelchair accessible?",
-      a: "Please let us know in advance if you have any specific accessibility requirements, and we will be happy to make arrangements at either venue.",
-    },
-    {
-      q: "What type of food will be served?",
-      a: "A lavish dinner will be served on both evenings, featuring vegetarian and non-vegetarian options. If you have any dietary restrictions or allergies, please mention them in your RSVP.",
-    },
-    {
-      q: "Can I take photos during the ceremony?",
-      a: "We have hired professional photographers and videographers to capture our special day. We kindly request an unplugged ceremony (no phones/cameras during the Nikah). You are welcome to take photos during the Walima and dinner!",
-    },
-    {
-      q: "What time should I arrive?",
-      a: "Both evenings begin at 8:00 PM. We encourage you to arrive on time so you don't miss the Nikah ceremony.",
-    },
-    {
-      q: "How can I get to the venues?",
-      a: "Inam Vihar is in Ghaziabad, Uttar Pradesh, and JMD Garden is in Aya Nagar near Arjangarh metro station, New Delhi. Please visit our Travel & Accommodation page for detailed directions and transportation options.",
-    },
-    {
-      q: "Whom should I contact for more information?",
-      a: "For any questions or special requests, please reach out to us directly — contact details are on the Travel page. We're happy to help!",
-    },
-  ],
-  contact: {
-    title: "Still Have Questions?",
-    body: "We're here to help! If you have any other questions or need assistance, please don't hesitate to contact us.",
   },
 } as const;

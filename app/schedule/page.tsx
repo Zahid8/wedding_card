@@ -3,7 +3,6 @@ import { SectionHeading } from "@/components/paper/SectionHeading";
 import { Foliage } from "@/components/paper/Foliage";
 import { SaveTheDate } from "@/components/schedule/SaveTheDate";
 import { EventList } from "@/components/schedule/EventList";
-import { DressCode } from "@/components/schedule/DressCode";
 
 export const metadata = { title: `Schedule · Wedding` };
 
@@ -16,7 +15,6 @@ export default function SchedulePage() {
       </section>
       <SaveTheDate />
       <EventList />
-      <DressCode />
     </div>
   );
 }
