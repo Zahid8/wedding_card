@@ -34,12 +34,20 @@ const arabic = Amiri({
 export const metadata: Metadata = {
   title: site.title,
   description: site.description,
-  metadataBase: new URL(site.url),
+  // Absolute URLs are required for WhatsApp previews. Prefer the real
+  // deployment host on Vercel, else the configured site URL.
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ??
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : site.url),
+  ),
   openGraph: {
     title: site.title,
     description: site.description,
+    siteName: "Saif & Farhat",
+    locale: "en_IN",
     type: "website",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",

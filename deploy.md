@@ -65,6 +65,10 @@ Ignored if Supabase vars are set. Payload is JSON with `name`, `phone`, `attendi
 
 **Project → Settings → Domains → Add**, then create the DNS records Vercel shows at your registrar. HTTPS is automatic.
 
-## 6. Editing content
+## 6. WhatsApp / social preview
+
+The link preview image is `app/opengraph-image.jpg` (1200×630, under 300 KB as WhatsApp requires). Replace that file (and `app/twitter-image.jpg`) to change it. On Vercel the absolute URL is taken from the production deployment host automatically; to force a specific domain set `NEXT_PUBLIC_SITE_URL=https://your-domain`. WhatsApp caches previews per URL for a day or more, so test with a fresh query string such as `?v=2` after redeploying.
+
+## 7. Editing content
 
 All text, names, dates, venues, phone, and map links live in `content/site.ts`. Artwork is in `public/art/`. Edit, commit, push.
