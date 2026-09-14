@@ -10,6 +10,7 @@ import { Foliage } from "@/components/paper/Foliage";
 import { cn } from "@/lib/utils";
 import { Blossoms, type Bloom } from "@/components/paper/Blossoms";
 import { FlowerCurtain } from "@/components/paper/FlowerCurtain";
+import { music } from "@/components/audio/music";
 
 /**
  * Full-screen animated invitation. Flower-decorated drapes part first, then
@@ -50,21 +51,11 @@ export function InvitationStage() {
   const [opened, setOpened] = useState(false); // curtain has been told to part
   const [sound, setSound] = useState<"pending" | "on" | "off">("pending");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const audio = useRef<HTMLAudioElement | null>(null);
-  const sectionRef = useRef<HTMLElement | null>(null);
 
   const startMusic = useCallback(async () => {
-    const a = audio.current;
-    if (!a) return false;
-    try {
-      a.currentTime = 0;
-      a.volume = 0.7;
-      await a.play();
-      setSound("on");
-      return true;
-    } catch {
-      return false;
-    }
+    const ok = await music.play();
+    if (ok) setSound("on");
+    return ok;
   }, []);
 
   // Try to open with music straight away; if the browser blocks autoplay,
@@ -101,22 +92,6 @@ export function InvitationStage() {
     setOpened(true);
   }, [startMusic]);
 
-  // pause the music when the invitation scrolls out of view, resume when back
-  useEffect(() => {
-    const el = sectionRef.current;
-    const a = audio.current;
-    if (!el || !a) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) a.pause();
-        else if (sound === "on" && a.paused) a.play().catch(() => {});
-      },
-      { threshold: 0.2 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [sound]);
-
   // curtain opens, then the show starts
   useEffect(() => {
     if (!opened) return;
@@ -135,6 +110,7 @@ export function InvitationStage() {
   const next = useCallback(() => go(index + 1), [go, index]);
   const prev = useCallback(() => go(index - 1), [go, index]);
   const replay = useCallback(() => {
+    music.restart();
     setStarted(false);
     setPlaying(false);
     setOpened(false);
@@ -179,12 +155,9 @@ export function InvitationStage() {
 
   return (
     <section
-      ref={sectionRef}
       aria-label="Wedding invitation"
       className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-[color:var(--color-paper)]"
     >
-      {/* the song from 0:30 to 1:15, looped */}
-      <audio ref={audio} src="/audio/invitation-loop.mp3" loop preload="auto" />
       {/* Desktop backdrop: vector only, so it stays crisp at any width */}
       <div aria-hidden className="absolute inset-0 hidden md:block">
         <Wash variant="sage" className="opacity-70" />

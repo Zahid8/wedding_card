@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BackgroundMusic } from "@/components/audio/BackgroundMusic";
 import { site } from "@/content/site";
 
 const script = Pinyon_Script({
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <BackgroundMusic src="/audio/invitation-loop.mp3" />
         <Analytics />
       </body>
     </html>
