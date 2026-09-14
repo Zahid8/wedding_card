@@ -268,7 +268,11 @@ The text below is the reference site's original copy, kept for structure.
 
 ## 7. Page-by-Page Design Spec (ours, in the watercolor system)
 
-### Home — the animated invitation (`components/home/InvitationStage.tsx`)
+### Home — the curtain-reveal invitation (`components/home/InvitationStage.tsx`)
+
+**Current build:** sheer drapes part to reveal the painted tent set; a garland and a hanging name card drop in on springs, the couple walk in from the sides, two date ribbons slide in, then the RSVP button appears. Replay button, reduced-motion path. Below: countdown, meet the couple, save the dates, venues (last section).
+
+*(Earlier story-style scene sequence, kept for reference:)*
 
 **Why this shape:** the source art is only 480×854. Stretched full-width it pixelates. So the painted frames are only ever drawn inside a **9:16 stage that matches the source size**: on phones the stage *is* the screen (≈1× scale), on desktop it is a centered card of at most 860 px tall (≈1.05×) sitting on a **vector-only backdrop** (paper texture SVG, washes, olive-branch SVGs, faint script initials). Cutouts render at ≤ 60 % of their native height. Nothing raster is ever scaled past ~1.1×.
 

@@ -142,69 +142,59 @@ export const home = {
     "We are overjoyed to invite you to share in the celebration of our love. Your presence would mean the world to us as we begin this beautiful journey together.",
     "This website has all the information you need about our special day. We can't wait to celebrate with you!",
   ],
-  quickLinks: [
-    { href: "/our-story", title: "Our Story", desc: "Learn how our love story began" },
-    { href: "/schedule", title: "Schedule", desc: "View the wedding day timeline" },
-    { href: "/travel", title: "Travel", desc: "Find accommodation & directions" },
-  ],
   closing: "Will you join us?",
   stage: {
-    invitedTo: "You are invited to the wedding of",
-    inviteLine: "invite you to their wedding celebration",
-    nikahLabel: "Nikah Ceremony",
-    at: "at",
+    families: "Together with their families",
+    invitedTo: "warmly invite you to the wedding of",
     scrollCue: "Scroll for details",
-    skip: "Skip",
     replay: "Replay",
-    groomLabel: "The Groom",
-    brideLabel: "The Bride",
   },
 } as const;
 
 export const story = {
   heading: "Our Story",
   subtitle:
-    "Every love story is beautiful, but ours is our favorite. Here's how two hearts found their way to each other.",
+    "Two families, one dua, and a promise made for a lifetime. This is how Saif and Farhat's story began.",
   bride: {
     name: "Farhat Khatoon",
     label: "The Bride",
-    bio: "A soul filled with grace and warmth. Her light shines through everything she does, bringing joy to all around her.",
+    bio: "Gentle, quick to laugh, and steady in her faith, Farhat brings calm to every room she enters. She is the one who remembers the small things, and the one everyone turns to when it matters.",
   },
   groom: {
     name: "Mohd. Saif Uddin",
     label: "The Groom",
-    bio: "A dedicated professional with a heart full of dreams. His kindness, wisdom, and gentle spirit make every day brighter.",
+    bio: "Thoughtful, hardworking, and endlessly patient, Saif leads with kindness. He carries his family's values with pride and meets every day with a quiet, hopeful heart.",
   },
   journeyHeading: "Our Journey Together",
   journey: [
     {
-      label: "The Beginning",
-      title: "When We First Met",
-      text: "Our paths crossed in a moment that would change our lives forever. What started as a simple introduction blossomed into something beautiful.",
+      label: "The Introduction",
+      title: "Two Families Meet",
+      text: "It began the way the best stories in our families always have: with an introduction, a cup of chai, and two families who found they had far more in common than they expected.",
       icon: "heart",
     },
     {
-      label: "Growing Together",
-      title: "Building Our Bond",
-      text: "Through countless conversations, shared dreams, and quiet moments, we discovered how perfectly we complement each other. Every day brought us closer.",
+      label: "Getting to Know Each Other",
+      title: "Conversations That Mattered",
+      text: "Over long phone calls and careful, honest conversations, Saif and Farhat discovered a shared sense of humour, the same quiet values, and an ease with each other that felt like it had always been there.",
       icon: "sparkles",
     },
     {
-      label: "The Proposal",
-      title: "A Question Asked",
-      text: "With hearts full of love and hope for the future, the question was asked and joyfully answered. We knew this was just the beginning of our forever.",
+      label: "The Yes",
+      title: "Alhamdulillah, It Was Decided",
+      text: "With the blessings of both families, the answer was a joyful yes. Sweets were shared, duas were made, and a date was set that we have been counting down to ever since.",
       icon: "heart-filled",
     },
     {
       label: "September 25 & 26, 2026",
-      title: "Our Wedding Days",
-      text: "And now, we invite you to join us as we celebrate our love and commitment — the Nikah at Inam Vihar, Ghaziabad, and the Walima at JMD Garden, Aya Nagar, Delhi. This is where our forever begins.",
+      title: "The Nikah and the Walima",
+      text: "Now we invite you to witness the Nikah at Inam Vihar, Ghaziabad, and to celebrate with us at the Walima at JMD Garden, Aya Nagar, Delhi. Your presence and your duas are the gifts we cherish most.",
       icon: "calendar",
     },
   ],
   quote: {
-    text: "Whatever our souls are made of, his and mine are the same.",
-    author: "Emily Brontë",
+    text: "And We created you in pairs.",
+    author: "Qur'an 78:8",
   },
 } as const;
 

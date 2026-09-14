@@ -65,11 +65,11 @@ body {
 
 .tracked-label {
   font-family: var(--font-serif), serif;
-  font-weight: 300;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--color-tan);
-  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: color-mix(in oklab, var(--color-bark) 70%, var(--color-tan));
+  font-size: 0.78rem;
 }
 
 .paper-card {
@@ -199,12 +199,34 @@ body {
 }
 /* same as .torn-top; kept for the stage wipe */
 
-@keyframes stageFill {
-  from { width: 0; }
-  to { width: 100%; }
+
+/* --- Curtains -------------------------------------------------------- */
+.curtain {
+  background-color: var(--color-drape);
+  background-image:
+    url("/textures/grain.svg"),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.55) 0px,
+      rgba(255, 255, 255, 0.55) 14px,
+      rgba(190, 184, 172, 0.28) 30px,
+      rgba(255, 255, 255, 0.5) 48px,
+      rgba(210, 204, 192, 0.32) 66px
+    ),
+    linear-gradient(180deg, rgba(225, 220, 210, 0.9), rgba(238, 236, 231, 0.96) 25%, rgba(232, 229, 222, 0.98));
+  background-size: 240px 240px, 66px 100%, 100% 100%;
+  background-blend-mode: multiply, normal, normal;
+  box-shadow: inset 0 0 60px rgba(120, 100, 80, 0.12);
 }
-.stage-fill {
-  animation-name: stageFill;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
+.curtain-left {
+  border-right: 1px solid rgba(160, 150, 135, 0.35);
+  box-shadow: 12px 0 30px -10px rgba(60, 40, 25, 0.35), inset 0 0 60px rgba(120, 100, 80, 0.12);
+  -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 92%, transparent 100%);
+}
+.curtain-right {
+  border-left: 1px solid rgba(160, 150, 135, 0.35);
+  box-shadow: -12px 0 30px -10px rgba(60, 40, 25, 0.35), inset 0 0 60px rgba(120, 100, 80, 0.12);
+  -webkit-mask-image: linear-gradient(270deg, #000 92%, transparent 100%);
+  mask-image: linear-gradient(270deg, #000 92%, transparent 100%);
 }
