@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
 import { site, home, story } from "@/content/site";
 import { Wash } from "@/components/paper/Wash";
 import { Foliage } from "@/components/paper/Foliage";
@@ -101,17 +100,6 @@ export function InvitationStage() {
     startMusic();
     setOpened(true);
   }, [startMusic]);
-
-  const toggleSound = useCallback(() => {
-    const a = audio.current;
-    if (!a) return;
-    if (sound === "on") {
-      a.pause();
-      setSound("off");
-    } else {
-      a.play().then(() => setSound("on")).catch(() => setSound("off"));
-    }
-  }, [sound]);
 
   // pause the music when the invitation scrolls out of view, resume when back
   useEffect(() => {
@@ -546,16 +534,6 @@ export function InvitationStage() {
 
         {/* controls */}
         <div className={cn("absolute bottom-4 inset-x-0 px-6 flex items-center justify-between z-20 text-[color:var(--color-bark)]/70 transition-opacity", started ? "opacity-100" : "opacity-0")}>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSound();
-            }}
-            aria-label={sound === "on" ? "Mute music" : "Play music"}
-            className="p-1 hover:text-[color:var(--color-bark)]"
-          >
-            {sound === "on" ? <Volume2 size={16} strokeWidth={1.5} /> : <VolumeX size={16} strokeWidth={1.5} />}
-          </button>
           {index < LAST ? (
             <button
               onClick={(e) => {
@@ -662,11 +640,8 @@ function Curtains({
             transition={{ delay: 0.4, duration: 0.6 }}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-3 text-[color:var(--color-bark)]"
           >
-            <span className="w-16 h-16 rounded-full bg-[color:var(--color-paper)] border border-[color:var(--color-tan)] shadow-[0_10px_30px_-12px_rgba(87,52,30,0.5)] flex items-center justify-center">
-              <Volume2 size={24} strokeWidth={1.25} />
-            </span>
             <span className="font-script text-3xl leading-none">Open the invitation</span>
-            <span className="tracked-label text-[0.6rem]">tap to begin with music</span>
+            <span className="tracked-label text-[0.6rem]">tap to open</span>
           </motion.button>
         )}
       </AnimatePresence>
