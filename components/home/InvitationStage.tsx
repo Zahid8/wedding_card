@@ -183,7 +183,7 @@ export function InvitationStage() {
       aria-label="Wedding invitation"
       className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-[color:var(--color-paper)]"
     >
-      {/* the song from its 30 s mark to the end, looped */}
+      {/* the song from 0:30 to 1:15, looped */}
       <audio ref={audio} src="/audio/music.mp3" loop preload="auto" />
       {/* Desktop backdrop: vector only, so it stays crisp at any width */}
       <div aria-hidden className="absolute inset-0 hidden md:block">
