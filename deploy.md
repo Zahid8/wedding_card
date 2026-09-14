@@ -1,21 +1,46 @@
-# Deploy to Vercel
+# Deploy
 
-1. Push to GitHub: `git init && git add . && git commit -m "init" && git remote add origin <your-repo> && git push -u origin main`
-2. Go to https://vercel.com/new and import the repo.
-3. Framework preset auto-detects **Next.js** — leave all build settings default.
-4. Click **Deploy**. Wait ~2 minutes for the first build.
-5. Open the assigned `*.vercel.app` URL.
+Repo: https://github.com/Zahid8/wedding_card · Next.js 16 · deploys on Vercel with zero config.
 
-## Optional: persist RSVPs
+## 1. Run locally
 
-Add env vars in **Project → Settings → Environment Variables**, then redeploy.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build check
+```
 
-**Supabase** (preferred):
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `SUPABASE_RSVP_TABLE` (default `rsvps`)
+## 2. Push changes
 
-Create the table:
+```bash
+git add -A
+git commit -m "your message"
+git push origin main
+```
+
+Vercel redeploys automatically on every push to `main`.
+
+## 3. First-time Vercel setup
+
+1. Go to https://vercel.com/new and import `Zahid8/wedding_card`.
+2. Framework is auto-detected as **Next.js**. Leave build settings default.
+3. Click **Deploy**. First build takes about 2 minutes.
+4. Open the `*.vercel.app` URL. Set the same URL as `site.url` in `content/site.ts` so share previews resolve, then push.
+
+## 4. RSVP storage (optional)
+
+Without any env vars, RSVPs are accepted and logged to Vercel runtime logs (Project → Logs). To persist them, add env vars under **Project → Settings → Environment Variables** and redeploy.
+
+**Option A: Supabase (preferred)**
+
+| Variable | Value |
+|---|---|
+| `SUPABASE_URL` | `https://<project>.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | service role key from Project Settings → API |
+| `SUPABASE_RSVP_TABLE` | `rsvps` (default) |
+
+Create the table in the Supabase SQL editor:
+
 ```sql
 create table rsvps (
   id uuid primary key default gen_random_uuid(),
@@ -28,10 +53,18 @@ create table rsvps (
 );
 ```
 
-**Webhook** (Zapier / Make / Google Sheets): `RSVP_WEBHOOK_URL`
+**Option B: Webhook (Google Sheets via Zapier or Make)**
 
-Without either, RSVPs are accepted and logged to Vercel runtime logs.
+| Variable | Value |
+|---|---|
+| `RSVP_WEBHOOK_URL` | the webhook URL |
 
-## Custom domain
+Ignored if Supabase vars are set. Payload is JSON with `name`, `phone`, `attending`, `guests`, `dietary`, `timestamp`.
 
-**Project → Settings → Domains → Add**, then update DNS with the records Vercel shows.
+## 5. Custom domain (optional)
+
+**Project → Settings → Domains → Add**, then create the DNS records Vercel shows at your registrar. HTTPS is automatic.
+
+## 6. Editing content
+
+All text, names, dates, venues, phone, and map links live in `content/site.ts`. Artwork is in `public/art/`. Edit, commit, push.
