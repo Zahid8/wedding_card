@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 import { site, home, story } from "@/content/site";
 import { Wash } from "@/components/paper/Wash";
 import { Foliage } from "@/components/paper/Foliage";
@@ -47,10 +48,90 @@ export function InvitationStage() {
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false); // scenes render once the curtain is open
   const [run, setRun] = useState(0); // bumps to restart everything
+  const [opened, setOpened] = useState(false); // curtain has been told to part
+  const [sound, setSound] = useState<"pending" | "on" | "off">("pending");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const startMusic = useCallback(async () => {
+    const a = audio.current;
+    if (!a) return false;
+    try {
+      a.currentTime = 0;
+      a.volume = 0.7;
+      await a.play();
+      setSound("on");
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Try to open with music straight away; if the browser blocks autoplay,
+  // wait for a tap on the curtain (fallback: open silently after a while).
+  useEffect(() => {
+    let cancelled = false;
+    let fallback: ReturnType<typeof setTimeout> | null = null;
+    if (reduce) {
+      fallback = setTimeout(() => setOpened(true), 0);
+      return () => {
+        if (fallback) clearTimeout(fallback);
+      };
+    }
+    // deferred so no state is set synchronously inside the effect
+    const kick = setTimeout(() => {
+      startMusic().then((ok) => {
+        if (cancelled) return;
+        if (ok) setOpened(true);
+        else {
+          setSound("off");
+          fallback = setTimeout(() => setOpened(true), 7000);
+        }
+      });
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(kick);
+      if (fallback) clearTimeout(fallback);
+    };
+  }, [run, reduce, startMusic]);
+
+  const openWithMusic = useCallback(() => {
+    startMusic();
+    setOpened(true);
+  }, [startMusic]);
+
+  const toggleSound = useCallback(() => {
+    const a = audio.current;
+    if (!a) return;
+    if (sound === "on") {
+      a.pause();
+      setSound("off");
+    } else {
+      a.play().then(() => setSound("on")).catch(() => setSound("off"));
+    }
+  }, [sound]);
+
+  // pause the music when the invitation scrolls out of view, resume when back
+  useEffect(() => {
+    const el = sectionRef.current;
+    const a = audio.current;
+    if (!el || !a) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) a.pause();
+        else if (sound === "on" && a.paused) a.play().catch(() => {});
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [sound]);
 
   // curtain opens, then the show starts
   useEffect(() => {
+    if (!opened) return;
     const t = setTimeout(
       () => {
         setStarted(true);
@@ -59,7 +140,7 @@ export function InvitationStage() {
       reduce ? 0 : CURTAIN_MS,
     );
     return () => clearTimeout(t);
-  }, [run, reduce]);
+  }, [opened, run, reduce]);
 
   const scene: SceneId | null = started ? SCENES[index].id : null;
   const go = useCallback((i: number) => setIndex(Math.max(0, Math.min(LAST, i))), []);
@@ -68,6 +149,7 @@ export function InvitationStage() {
   const replay = useCallback(() => {
     setStarted(false);
     setPlaying(false);
+    setOpened(false);
     go(0);
     setRun((r) => r + 1);
   }, [go]);
@@ -109,9 +191,12 @@ export function InvitationStage() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Wedding invitation"
       className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-[color:var(--color-paper)]"
     >
+      {/* first 30 s of the song, looped */}
+      <audio ref={audio} src="/audio/music-30s.mp3" loop preload="auto" />
       {/* Desktop backdrop: vector only, so it stays crisp at any width */}
       <div aria-hidden className="absolute inset-0 hidden md:block">
         <Wash variant="sage" className="opacity-70" />
@@ -461,6 +546,16 @@ export function InvitationStage() {
 
         {/* controls */}
         <div className={cn("absolute bottom-4 inset-x-0 px-6 flex items-center justify-between z-20 text-[color:var(--color-bark)]/70 transition-opacity", started ? "opacity-100" : "opacity-0")}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSound();
+            }}
+            aria-label={sound === "on" ? "Mute music" : "Play music"}
+            className="p-1 hover:text-[color:var(--color-bark)]"
+          >
+            {sound === "on" ? <Volume2 size={16} strokeWidth={1.5} /> : <VolumeX size={16} strokeWidth={1.5} />}
+          </button>
           {index < LAST ? (
             <button
               onClick={(e) => {
@@ -504,7 +599,7 @@ export function InvitationStage() {
         <div aria-hidden className="hidden md:block absolute inset-x-0 top-0 h-6 torn-bottom bg-[color:var(--color-paper)] rotate-180 pointer-events-none" />
       </div>
 
-      <Curtains key={run} reduce={!!reduce} />
+      <Curtains key={run} reduce={!!reduce} open={opened} onOpen={openWithMusic} showPrompt={!opened && sound === "off"} />
     </section>
   );
 }
@@ -539,31 +634,62 @@ const LEFT_BLOOMS: Bloom[] = [
 const RIGHT_BLOOMS: Bloom[] = LEFT_BLOOMS.map((b) => ({ ...b, x: 100 - b.x }));
 
 /** Sheer, flower-trimmed drapes that part to reveal the stage. */
-function Curtains({ reduce }: { reduce: boolean }) {
-  const transition = { delay: 0.5, duration: 2.4, ease: [0.7, 0, 0.2, 1] as const };
+function Curtains({
+  reduce,
+  open,
+  onOpen,
+  showPrompt,
+}: {
+  reduce: boolean;
+  open: boolean;
+  onOpen: () => void;
+  showPrompt: boolean;
+}) {
+  const transition = { delay: 0.3, duration: 2.4, ease: [0.7, 0, 0.2, 1] as const };
   const panel = "absolute inset-y-0 w-[52%] curtain will-change-transform overflow-visible";
   return (
-    <div aria-hidden className="absolute inset-0 z-30 pointer-events-none">
+    <div className={cn("absolute inset-0 z-30", open ? "pointer-events-none" : "pointer-events-auto")} onClick={open ? undefined : onOpen}>
+      {/* tap-to-open prompt when autoplay with sound is blocked */}
+      <AnimatePresence>
+        {showPrompt && (
+          <motion.button
+            key="prompt"
+            type="button"
+            onClick={onOpen}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-3 text-[color:var(--color-bark)]"
+          >
+            <span className="w-16 h-16 rounded-full bg-[color:var(--color-paper)] border border-[color:var(--color-tan)] shadow-[0_10px_30px_-12px_rgba(87,52,30,0.5)] flex items-center justify-center">
+              <Volume2 size={24} strokeWidth={1.25} />
+            </span>
+            <span className="font-script text-3xl leading-none">Open the invitation</span>
+            <span className="tracked-label text-[0.6rem]">tap to begin with music</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
       {/* garland swag along the rod */}
       <motion.div
-        className="absolute inset-x-0 -top-3 flex justify-center z-10"
+        className="absolute inset-x-0 -top-3 flex justify-center z-10 pointer-events-none"
         initial={reduce ? { opacity: 0 } : { opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 2.2, duration: 1 }}
+        animate={{ opacity: open ? 0 : 1 }}
+        transition={{ delay: open ? 2 : 0, duration: 1 }}
       >
         <svg viewBox="0 0 400 40" preserveAspectRatio="none" className="w-full h-12">
           <path d="M0 6 C 100 34, 300 34, 400 6" stroke="var(--color-olive)" strokeWidth="1.2" fill="none" />
           <path d="M0 4 C 100 30, 300 30, 400 4" stroke="var(--color-sage)" strokeWidth="0.8" fill="none" />
         </svg>
       </motion.div>
-      <motion.div className={cn(panel, "left-0 curtain-left")} initial={reduce ? { x: "-100%" } : { x: 0 }} animate={{ x: "-100%" }} transition={transition}>
+      <motion.div className={cn(panel, "left-0 curtain-left")} initial={reduce ? { x: "-100%" } : { x: 0 }} animate={{ x: open ? "-100%" : 0 }} transition={transition}>
         <Blossoms blooms={LEFT_BLOOMS} scale={8} className="absolute inset-0 pointer-events-none md:hidden" />
         <Blossoms blooms={LEFT_BLOOMS} scale={15} className="absolute inset-0 pointer-events-none hidden md:block" />
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
           <path d="M91 0 C 89 20, 93 40, 90 60 C 88 78, 92 90, 91 100" stroke="var(--color-olive)" strokeWidth="0.4" fill="none" opacity="0.7" />
         </svg>
       </motion.div>
-      <motion.div className={cn(panel, "right-0 curtain-right")} initial={reduce ? { x: "100%" } : { x: 0 }} animate={{ x: "100%" }} transition={transition}>
+      <motion.div className={cn(panel, "right-0 curtain-right")} initial={reduce ? { x: "100%" } : { x: 0 }} animate={{ x: open ? "100%" : 0 }} transition={transition}>
         <Blossoms blooms={RIGHT_BLOOMS} scale={8} className="absolute inset-0 pointer-events-none md:hidden" />
         <Blossoms blooms={RIGHT_BLOOMS} scale={15} className="absolute inset-0 pointer-events-none hidden md:block" />
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
