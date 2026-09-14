@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Farhat &amp; Saif — Wedding Website
 
-## Getting Started
+A six-page watercolor wedding invitation site built from original artwork
+(see `assets/`). Next.js 15 App Router · Tailwind CSS v4 · Framer Motion · Zod.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this repo to GitHub.
+2. Import it into Vercel — the framework auto-detects as **Next.js**, no
+   overrides needed.
+3. (Optional) Add the environment variables below to persist RSVPs. Without
+   them, the API route accepts submissions and logs to the server console so
+   the site still works out of the box.
 
-## Learn More
+### Optional environment variables
 
-To learn more about Next.js, take a look at the following resources:
+| Var | Purpose |
+|---|---|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only) |
+| `SUPABASE_RSVP_TABLE` | Table name (default `rsvps`) |
+| `RSVP_WEBHOOK_URL` | Fallback POST target (Zapier / Make / Sheets webhook) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If both Supabase envs are set, the site writes to a table shaped like:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```sql
+create table rsvps (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  phone text,
+  attending text not null,
+  guests text not null,
+  dietary text
+);
+```
 
-## Deploy on Vercel
+If only `RSVP_WEBHOOK_URL` is set, submissions POST there instead.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Editing content
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All copy lives in [`content/site.ts`](./content/site.ts) — names, date,
+venue, schedule, hotels, FAQs. Text edits never touch components.
+
+## Assets
+
+Watercolor source PNGs are in [`assets/`](./assets). The deployed art lives
+in `public/art/`. Swap any file there and rebuild.

@@ -1,26 +1,210 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #f5f4ed;
+  --color-paper-wash: #e9e6da;
+  --color-sage: #a6ad97;
+  --color-olive: #6f7a58;
+  --color-sand: #dcc9b0;
+  --color-tan: #a1795a;
+  --color-bark: #57341e;
+  --color-ink: #33231c;
+  --color-blush: #fcd7cf;
+  --color-coral: #e8877a;
+  --color-drape: #ebebe8;
+
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+
+  --font-script: var(--font-script);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-arabic: var(--font-arabic);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  background-image:
+    url("/textures/grain.svg"),
+    url("/textures/paper.svg");
+  background-size: 240px 240px, 480px 480px;
+  background-attachment: fixed;
+  background-blend-mode: multiply;
+}
+
+::selection {
+  background: var(--color-blush);
+  color: var(--color-bark);
+}
+
+.font-script {
+  font-family: var(--font-script), "Great Vibes", cursive;
+  font-weight: 400;
+}
+.font-serif {
+  font-family: var(--font-serif), "Cormorant Garamond", ui-serif, Georgia, serif;
+}
+.font-sans {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+.font-arabic {
+  font-family: var(--font-arabic), serif;
+}
+
+.tracked-label {
+  font-family: var(--font-serif), serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--color-tan);
+  font-size: 0.72rem;
+}
+
+.paper-card {
+  background-color: color-mix(in oklab, var(--color-sand) 42%, var(--color-paper));
+  background-image:
+    url("/textures/grain.svg"),
+    radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,0.35), transparent 60%);
+  background-size: 240px 240px, cover;
+  background-blend-mode: multiply, normal;
+  border: 1px solid color-mix(in oklab, var(--color-tan) 40%, transparent);
+  position: relative;
+}
+
+/* Torn paper edges. Each mask is a jagged 24px strip plus a solid rect for
+   the rest of the box, so the element itself is never clipped away. */
+.torn-top {
+  -webkit-mask-image: url("/masks/torn-top.svg"), linear-gradient(#000, #000);
+  mask-image: url("/masks/torn-top.svg"), linear-gradient(#000, #000);
+  -webkit-mask-size: 240px 24px, 100% calc(100% - 23px);
+  mask-size: 240px 24px, 100% calc(100% - 23px);
+  -webkit-mask-position: top center, 0 23px;
+  mask-position: top center, 0 23px;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat-x, no-repeat;
+}
+
+.torn-bottom {
+  -webkit-mask-image: url("/masks/torn-bottom.svg"), linear-gradient(#000, #000);
+  mask-image: url("/masks/torn-bottom.svg"), linear-gradient(#000, #000);
+  -webkit-mask-size: 240px 24px, 100% calc(100% - 23px);
+  mask-size: 240px 24px, 100% calc(100% - 23px);
+  -webkit-mask-position: bottom center, 0 0;
+  mask-position: bottom center, 0 0;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat-x, no-repeat;
+}
+
+.torn-top.torn-bottom {
+  -webkit-mask-image: url("/masks/torn-top.svg"), url("/masks/torn-bottom.svg"), linear-gradient(#000, #000);
+  mask-image: url("/masks/torn-top.svg"), url("/masks/torn-bottom.svg"), linear-gradient(#000, #000);
+  -webkit-mask-size: 240px 24px, 240px 24px, 100% calc(100% - 46px);
+  mask-size: 240px 24px, 240px 24px, 100% calc(100% - 46px);
+  -webkit-mask-position: top center, bottom center, 0 23px;
+  mask-position: top center, bottom center, 0 23px;
+  -webkit-mask-repeat: repeat-x, repeat-x, no-repeat;
+  mask-repeat: repeat-x, repeat-x, no-repeat;
+}
+
+.wobble-border {
+  border-image: url("/masks/wobbly-border.svg") 12 round;
+  border-width: 6px;
+  border-style: solid;
+}
+
+.stamp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--color-bark);
+  color: var(--color-paper);
+  border-radius: 999px;
+  font-family: var(--font-serif), serif;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  transition: transform 200ms ease, background 200ms ease, color 200ms ease;
+  position: relative;
+}
+.stamp-btn:hover {
+  transform: translateY(-1px);
+}
+.stamp-btn-coral {
+  background: var(--color-coral);
+  color: var(--color-paper);
+  box-shadow: 0 6px 18px -12px rgba(232, 135, 122, 0.9);
+}
+.stamp-btn-ghost {
+  background: transparent;
+  color: var(--color-bark);
+  border: 1px solid var(--color-tan);
+}
+
+.brush-underline {
+  background-image: url("/masks/brush-rule.svg");
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  background-size: 100% 6px;
+  padding-bottom: 6px;
+}
+
+@keyframes kenburns {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  100% { transform: scale(1.06) translate3d(-1%, -1%, 0); }
+}
+.kenburns {
+  animation: kenburns 22s ease-in-out infinite alternate;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes writeIn {
+  to { stroke-dashoffset: 0; }
+}
+.script-write path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: writeIn 3s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns { animation: none; }
+  .script-write path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* --- Invitation stage ------------------------------------------------- */
+.torn-wipe-top {
+  -webkit-mask-image: url("/masks/torn-top.svg"), linear-gradient(#000, #000);
+  mask-image: url("/masks/torn-top.svg"), linear-gradient(#000, #000);
+  -webkit-mask-size: 240px 24px, 100% calc(100% - 23px);
+  mask-size: 240px 24px, 100% calc(100% - 23px);
+  -webkit-mask-position: top center, 0 23px;
+  mask-position: top center, 0 23px;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat-x, no-repeat;
+}
+/* same as .torn-top; kept for the stage wipe */
+
+@keyframes stageFill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.stage-fill {
+  animation-name: stageFill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
