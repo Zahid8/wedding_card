@@ -190,7 +190,6 @@ export function RsvpForm() {
         >
           {status === "loading" ? "Sending..." : rsvpCopy.submit}
         </button>
-        <p className="tracked-label">{rsvpCopy.deadline}</p>
       </div>
     </form>
   );

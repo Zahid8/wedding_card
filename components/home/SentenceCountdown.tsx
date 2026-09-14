@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site } from "@/content/site";
+import { site, home } from "@/content/site";
 import { diff } from "@/lib/countdown";
 import { Reveal } from "@/components/motion/Reveal";
 import { Wash } from "@/components/paper/Wash";
@@ -24,11 +24,11 @@ export function SentenceCountdown() {
         <Reveal>
           {parts.past ? (
             <p className="font-serif italic text-2xl md:text-3xl text-[color:var(--color-bark)] leading-snug">
-              Alhamdulillah, we are married. Thank you for celebrating with us.
+              {home.meme.countdownPast}
             </p>
           ) : (
             <p className="font-serif italic text-2xl md:text-4xl text-[color:var(--color-bark)] leading-snug">
-              In{" "}
+              {home.meme.countdownBefore}{" "}
               <span className="font-serif not-italic font-light text-[color:var(--color-tan)] text-3xl md:text-5xl mx-1">
                 {parts.days}
               </span>
@@ -40,10 +40,9 @@ export function SentenceCountdown() {
               <span className="font-serif not-italic font-light text-[color:var(--color-tan)] text-3xl md:text-5xl mx-1">
                 {parts.minutes}
               </span>
-              minutes, we say <span className="font-script text-[color:var(--color-coral)] text-3xl md:text-5xl">Qubool Hai</span>.
+              minutes, {home.meme.countdownAfter}
             </p>
           )}
-          <p className="tracked-label mt-8">Kindly respond by {site.rsvpDeadline}</p>
         </Reveal>
       </div>
     </section>

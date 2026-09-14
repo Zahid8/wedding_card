@@ -143,11 +143,26 @@ export const home = {
     "This website has all the information you need about our special day. We can't wait to celebrate with you!",
   ],
   closing: "Will you join us?",
+  meme: {
+    waitScript: "But wait…",
+    waitLabel: "there's more",
+    brideLine: "Do you love me?",
+    groomLine: "We're about to say Qubool Hai… are you serious?",
+    /** countdown sentence: "In {n} days… {after}" */
+    countdownBefore: "In",
+    countdownAfter: "Farhat will finally believe that Saif actually loves her.",
+    countdownPast: "Alhamdulillah. Farhat now believes that Saif actually loves her.",
+    footnote: "(He does. He's just bad at answering questions.)",
+  },
   stage: {
     families: "Together with their families",
-    invitedTo: "warmly invite you to the wedding of",
+    invitedTo: "You are invited to the wedding of",
+    inviteLine: "invite you to their wedding celebration",
     scrollCue: "Scroll for details",
+    skip: "Skip",
     replay: "Replay",
+    groomLabel: "The Groom",
+    brideLabel: "The Bride",
   },
 } as const;
 
