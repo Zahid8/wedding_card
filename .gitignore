@@ -39,5 +39,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-music.mp3
-music2.mp3
+/music.mp3
+/music2.mp3
