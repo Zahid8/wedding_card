@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { site } from "@/content/site";
-import { art } from "@/content/art";
+import { art, isLandscape } from "@/content/art";
 import { Reveal } from "@/components/motion/Reveal";
 
 export function VenueScene() {
@@ -13,10 +13,10 @@ export function VenueScene() {
           <span className="tracked-label">The Venues</span>
           <h2 className="font-script text-4xl md:text-5xl mt-2 text-[color:var(--color-bark)]">Where we celebrate</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-8 md:gap-12 items-center">
+        <div className={isLandscape ? "grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-8 md:gap-12 items-center" : "grid grid-cols-1 md:grid-cols-[340px_1fr] gap-8 md:gap-12 items-center"}>
           <Reveal className="hidden md:block">
-            <div className="relative aspect-[9/16] w-full max-w-[340px] mx-auto overflow-hidden torn-wipe-top -rotate-1 shadow-[0_30px_60px_-40px_rgba(87,52,30,0.5)]">
-              <Image src={art.background.src} alt={art.background.alt} fill sizes="340px" className="object-cover object-bottom kenburns" />
+            <div className={isLandscape ? "relative aspect-[4/3] w-full overflow-hidden torn-wipe-top -rotate-1 shadow-[0_30px_60px_-40px_rgba(87,52,30,0.5)]" : "relative aspect-[9/16] w-full max-w-[340px] mx-auto overflow-hidden torn-wipe-top -rotate-1 shadow-[0_30px_60px_-40px_rgba(87,52,30,0.5)]"}>
+              <Image src={art.background.src} alt={art.background.alt} fill sizes="(max-width: 768px) 100vw, 640px" className={isLandscape ? "object-cover object-center kenburns" : "object-cover object-bottom kenburns"} />
             </div>
           </Reveal>
           <div className="flex flex-col gap-6">

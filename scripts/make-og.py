@@ -31,24 +31,35 @@ img = Image.blend(img, wash.filter(ImageFilter.GaussianBlur(90)), 0.85)
 noise = Image.effect_noise((W, H), 12).convert("L"); img = Image.blend(img, Image.merge("RGB", (noise, noise, noise)), 0.06)
 
 pub = lambda p: os.path.join(ROOT, "public", p.lstrip("/"))
-b = Image.open(pub(bg["src"])).convert("RGBA"); bw = int(b.width * H / b.height); b = b.resize((bw, H), Image.LANCZOS)
-mask = Image.new("L", (bw, H), 255); md = ImageDraw.Draw(mask)
-for x in range(140): md.line((x, 0, x, H), fill=int(255 * x / 140))
-b.putalpha(mask); img.paste(b, (W - bw, 0), b)
+b = Image.open(pub(bg["src"])).convert("RGBA")
+landscape = bg.get("orientation") == "landscape"
+if landscape:
+    # cover the whole card, then fade to paper on the left so the text stays readable
+    s = max(W / b.width, H / b.height); b = b.resize((int(b.width * s), int(b.height * s)), Image.LANCZOS)
+    b = b.crop(((b.width - W) // 2, (b.height - H) // 2, (b.width - W) // 2 + W, (b.height - H) // 2 + H))
+    mask = Image.new("L", (W, H), 255); md = ImageDraw.Draw(mask)
+    for x in range(W):
+        md.line((x, 0, x, H), fill=int(255 * min(1, max(0, (x - 620) / 340))) if x < 960 else 255)
+    b.putalpha(mask); img.paste(b, (0, 0), b); bw = W // 2 + 40
+else:
+    bw = int(b.width * H / b.height); b = b.resize((bw, H), Image.LANCZOS)
+    mask = Image.new("L", (bw, H), 255); md = ImageDraw.Draw(mask)
+    for x in range(140): md.line((x, 0, x, H), fill=int(255 * x / 140))
+    b.putalpha(mask); img.paste(b, (W - bw, 0), b)
 
 fit = lambda im, h: im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
 g = Image.open(pub(groom["src"])).convert("RGBA")
 if groom["facing"] == "left": g = g.transpose(Image.FLIP_LEFT_RIGHT)   # groom stands left, faces right
 r = Image.open(pub(bride["src"])).convert("RGBA")
 if bride["facing"] == "right": r = r.transpose(Image.FLIP_LEFT_RIGHT)   # bride stands right, faces left
-g = fit(g, int(500 * float(groom.get("scale", 1)))); r = fit(r, int(500 * float(bride.get("scale", 1))))
-cx = W - bw // 2; base = H - 42
+g = fit(g, int(480 * float(groom.get("scale", 1)))); r = fit(r, int(480 * float(bride.get("scale", 1))))
+cx = (W - bw // 2) if not landscape else W - 250; base = H - 42
 img.paste(g, (cx - 10 - g.width, base - g.height), g); img.paste(r, (cx - 30, base - r.height), r)
 
 d = ImageDraw.Draw(img)
 bark, tan, coral, ink = (87, 52, 30), (140, 100, 70), (232, 135, 122), (51, 35, 28)
 script = font("Pinyon+Script", 88); names = font("Cormorant+Garamond:wght@500", 44)
-label = font("Cormorant+Garamond:wght@500", 22); body = font("Cormorant+Garamond:wght@500", 27)
+label = font("Cormorant+Garamond:wght@500", 22); body = font("Cormorant+Garamond:wght@500", 25)
 def spaced(x, y, t, f, fill, sp):
     for c in t: d.text((x, y), c, font=f, fill=fill); x += d.textlength(c, font=f) + sp
 L = 72

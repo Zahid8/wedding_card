@@ -19,7 +19,14 @@ export type Cutout = {
   /** Relative height when the couple stand together (1 = full). Use <1 to make one shorter. */
   scale: number;
 };
-export type Backdrop = { src: string; width: number; height: number; alt: string };
+export type Backdrop = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  /** "portrait" backdrops fill the 9:16 stage; "landscape" ones get a wider desktop stage and a centre crop on phones. */
+  orientation: "portrait" | "landscape";
+};
 
 export const art = {
   groom: {
@@ -40,11 +47,15 @@ export const art = {
   } satisfies Cutout as Cutout,
   background: {
     src: "/art/bg1.png",
-    width: 743,
-    height: 1080,
-    alt: "Floral wedding arch backdrop",
+    width: 1672,
+    height: 941,
+    alt: "Mughal arch balcony at sunset with lanterns and flowers",
+    orientation: "landscape",
   } satisfies Backdrop as Backdrop,
 };
+
+/** True when the backdrop is wider than tall. */
+export const isLandscape = art.background.orientation === "landscape";
 
 /** CSS aspect-ratio string, e.g. "214 / 749". */
 export const ratio = (a: { width: number; height: number }) => `${a.width} / ${a.height}`;

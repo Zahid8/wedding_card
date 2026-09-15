@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Blossoms, type Bloom } from "@/components/paper/Blossoms";
 import { FlowerCurtain } from "@/components/paper/FlowerCurtain";
 import { music } from "@/components/audio/music";
-import { art, ratio, faceScale } from "@/content/art";
+import { art, ratio, faceScale, isLandscape } from "@/content/art";
 
 /**
  * Full-screen animated invitation. Flower-decorated drapes part first, then
@@ -179,7 +179,8 @@ export function InvitationStage() {
       <div
         className={cn(
           "absolute inset-0 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2",
-          "md:top-[calc(50%+2.25rem)] md:h-[min(calc(100svh-8.5rem),860px)] md:aspect-[9/16]",
+          "md:top-[calc(50%+2.25rem)] md:h-[min(calc(100svh-8.5rem),860px)]",
+          isLandscape ? "md:aspect-[3/4]" : "md:aspect-[9/16]",
           "overflow-hidden bg-[color:var(--color-paper)] md:shadow-[0_40px_80px_-40px_rgba(87,52,30,0.45)]",
         )}
         onClick={(e) => {
@@ -215,8 +216,8 @@ export function InvitationStage() {
                 alt={art.background.alt}
                 fill
                 priority
-                sizes="(max-width: 768px) 100vw, 500px"
-                className="object-cover object-bottom"
+                sizes="(max-width: 768px) 100vw, 660px"
+                className={cn("object-cover", isLandscape ? "object-center" : "object-bottom")}
               />
               <div
                 aria-hidden
@@ -242,8 +243,8 @@ export function InvitationStage() {
                   src={art.background.src}
                   alt={art.background.alt}
                   fill
-                  sizes="(max-width: 768px) 100vw, 500px"
-                  className="object-cover object-bottom"
+                  sizes="(max-width: 768px) 100vw, 660px"
+                  className={cn("object-cover", isLandscape ? "object-center" : "object-bottom")}
                 />
               </div>
               <div
@@ -262,7 +263,7 @@ export function InvitationStage() {
           animate={
             groomOn
               ? meme
-                ? { x: "6%", opacity: 1, scaleX: groomRight, height: "46%" }
+                ? { x: "2%", opacity: 1, scaleX: groomRight, height: "46%" }
                 : meet
                   ? { x: "14%", opacity: 1, scaleX: groomRight, height: "50%" }
                   : { x: "6%", opacity: 1, scaleX: 1, height: "64%" }
@@ -298,7 +299,7 @@ export function InvitationStage() {
           {meme && (
             <motion.div
               key="meme-curtain"
-              className="absolute left-1/2 -translate-x-1/2 top-[27%] bottom-0 w-[22%]"
+              className="absolute left-[36%] -translate-x-1/2 top-[27%] bottom-0 w-[20%]"
               initial={reduce ? false : { y: "-110%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -322,7 +323,7 @@ export function InvitationStage() {
           {meme && (
             <motion.div
               key="bubble-groom"
-              className="absolute left-[3%] top-[30%] z-10 max-w-[46%]"
+              className="absolute left-[2%] top-[30%] z-10 max-w-[40%]"
               initial={reduce ? false : { opacity: 0, scale: 0.6, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0 }}
