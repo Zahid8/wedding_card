@@ -47,10 +47,10 @@ export const art = {
   } satisfies Cutout as Cutout,
   background: {
     src: "/art/bg1.png",
-    width: 1672,
-    height: 941,
-    alt: "Mughal arch balcony at sunset with lanterns and flowers",
-    orientation: "landscape",
+    width: 941,
+    height: 1672,
+    alt: "Marble arch with lanterns and bougainvillea over a lake at sunset",
+    orientation: "portrait",
   } satisfies Backdrop as Backdrop,
 };
 

@@ -221,8 +221,8 @@ export function InvitationStage() {
               />
               <div
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-[38%]"
-                style={{ background: "linear-gradient(to bottom, var(--color-paper) 30%, transparent)" }}
+                className="absolute inset-x-0 top-0 h-[42%]"
+                style={{ background: "linear-gradient(to bottom, rgba(245,244,237,0.72) 0%, rgba(245,244,237,0.45) 45%, transparent 100%)" }}
               />
             </motion.div>
           )}
@@ -249,8 +249,8 @@ export function InvitationStage() {
               </div>
               <div
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-[46%]"
-                style={{ background: "linear-gradient(to bottom, var(--color-paper) 40%, transparent)" }}
+                className="absolute inset-x-0 top-0 h-[48%]"
+                style={{ background: "linear-gradient(to bottom, rgba(245,244,237,0.72) 0%, rgba(245,244,237,0.45) 45%, transparent 100%)" }}
               />
             </motion.div>
           )}
