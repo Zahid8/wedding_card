@@ -8,19 +8,13 @@ export const footerCopy = {
 
 export function Footer() {
   return (
-    <footer className="relative isolate mt-10 overflow-hidden min-h-[440px] md:min-h-[560px] flex items-center justify-center">
+    <footer className="relative isolate mt-10 overflow-hidden flex items-end justify-center">
       {/* marble courtyard with bougainvillea, 80% opacity, framed so the flower banks flank the text */}
-      <div aria-hidden className="absolute inset-0 -z-10 opacity-80">
-        <Image
-          src="/art/footer.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover"
-          style={{ objectPosition: "50% 78%" }}
-        />
+      {/* image drawn at half the footer width, anchored to the bottom */}
+      <div aria-hidden className="relative w-full md:w-1/2 aspect-square -z-10 opacity-80">
+        <Image src="/art/footer.png" alt="" fill sizes="50vw" className="object-contain object-bottom" />
       </div>
-      <div className="relative mx-auto max-w-3xl px-6 py-16 text-center flex flex-col items-center gap-3">
+      <div className="absolute inset-x-0 top-[34%] md:top-[38%] mx-auto max-w-3xl px-6 text-center flex flex-col items-center gap-3">
         <p className="font-script text-4xl md:text-5xl text-[color:var(--color-bark)] drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
           {footerCopy.line1}
         </p>
