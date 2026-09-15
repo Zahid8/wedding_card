@@ -26,7 +26,7 @@ export const art = {
     src: "/art/groom1.png",
     width: 214,
     height: 749,
-    facing: "left",
+    facing: "right",
     alt: "Illustrated groom",
     scale: 1,
   } satisfies Cutout as Cutout,

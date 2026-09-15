@@ -262,9 +262,9 @@ export function InvitationStage() {
           animate={
             groomOn
               ? meme
-                ? { x: "10%", opacity: 1, scaleX: groomRight, height: "46%" }
+                ? { x: "6%", opacity: 1, scaleX: groomRight, height: "46%" }
                 : meet
-                  ? { x: "22%", opacity: 1, scaleX: groomRight, height: "50%" }
+                  ? { x: "14%", opacity: 1, scaleX: groomRight, height: "50%" }
                   : { x: "6%", opacity: 1, scaleX: 1, height: "64%" }
               : { x: "-120%", opacity: 0, scaleX: 1, height: "64%" }
           }
@@ -281,9 +281,9 @@ export function InvitationStage() {
           animate={
             brideOn
               ? meme
-                ? { x: "-4%", opacity: 1, scaleX: brideLeft, height: `${46 * bs}%` }
+                ? { x: "8%", opacity: 1, scaleX: brideLeft, height: `${46 * bs}%` }
                 : meet
-                  ? { x: "-14%", opacity: 1, scaleX: brideLeft, height: `${50 * bs}%` }
+                  ? { x: "4%", opacity: 1, scaleX: brideLeft, height: `${50 * bs}%` }
                   : { x: "-4%", opacity: 1, scaleX: 1, height: `${64 * bs}%` }
               : { x: "120%", opacity: 0, scaleX: 1, height: `${64 * bs}%` }
           }
