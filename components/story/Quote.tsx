@@ -5,7 +5,7 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export function Quote() {
   return (
-    <section className="relative overflow-hidden py-12 md:py-16">
+    <section className="relative isolate overflow-hidden py-12 md:py-16">
       <Wash variant="blush" />
       <Foliage className="-left-6 top-4 -rotate-12" width={200} opacity={0.6} />
       <Foliage className="-right-8 bottom-2 rotate-[160deg]" width={220} opacity={0.5} flip />
