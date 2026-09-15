@@ -8,12 +8,20 @@ import { Wash } from "@/components/paper/Wash";
 import { Foliage } from "@/components/paper/Foliage";
 
 export function SentenceCountdown() {
-  const [parts, setParts] = useState(() => diff(site.date.iso));
+  // Server and client clocks differ, so the numbers are filled in only after
+  // mount (avoids a hydration mismatch). Until then the digits render as em dashes.
+  const [parts, setParts] = useState<ReturnType<typeof diff> | null>(null);
 
   useEffect(() => {
-    const t = setInterval(() => setParts(diff(site.date.iso)), 1000);
-    return () => clearInterval(t);
+    const tick = () => setParts(diff(site.date.iso));
+    const t = setInterval(tick, 1000);
+    const first = setTimeout(tick, 0);
+    return () => {
+      clearInterval(t);
+      clearTimeout(first);
+    };
   }, []);
+  const n = (v: number | undefined) => (v === undefined ? "—" : v);
 
   return (
     <section className="relative isolate overflow-hidden py-12 md:py-16">
@@ -22,7 +30,7 @@ export function SentenceCountdown() {
       <Foliage className="-right-10 -bottom-8 rotate-[150deg]" width={260} opacity={0.5} flip />
       <div className="mx-auto max-w-3xl px-6 text-center">
         <Reveal>
-          {parts.past ? (
+          {parts?.past ? (
             <p className="font-serif italic text-2xl md:text-3xl text-[color:var(--color-bark)] leading-snug">
               {home.meme.countdownPast}
             </p>
@@ -30,15 +38,15 @@ export function SentenceCountdown() {
             <p className="font-serif italic text-2xl md:text-4xl text-[color:var(--color-bark)] leading-snug">
               {home.meme.countdownBefore}{" "}
               <span className="font-serif not-italic font-light text-[color:var(--color-tan)] text-3xl md:text-5xl mx-1">
-                {parts.days}
+                {n(parts?.days)}
               </span>
               days,{" "}
               <span className="font-serif not-italic font-light text-[color:var(--color-tan)] text-3xl md:text-5xl mx-1">
-                {parts.hours}
+                {n(parts?.hours)}
               </span>
               hours and{" "}
               <span className="font-serif not-italic font-light text-[color:var(--color-tan)] text-3xl md:text-5xl mx-1">
-                {parts.minutes}
+                {n(parts?.minutes)}
               </span>
               minutes, {home.meme.countdownAfter}
             </p>

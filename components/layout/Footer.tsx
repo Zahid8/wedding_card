@@ -14,11 +14,11 @@ export function Footer() {
       <div aria-hidden className="relative w-full md:w-1/2 aspect-square -z-10 opacity-80">
         <Image src="/art/footer.png" alt="" fill sizes="50vw" className="object-contain object-bottom" />
       </div>
-      <div className="absolute inset-x-0 top-[15%] md:top-[19%] mx-auto max-w-3xl px-6 text-center flex flex-col items-center gap-3">
+      <div className="absolute inset-x-0 top-[24%] md:top-[28%] mx-auto max-w-3xl px-6 text-center flex flex-col items-center gap-2 [transform:scaleX(0.88)]">
         <p className="font-script text-4xl md:text-5xl text-[color:var(--color-bark)] drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
           {footerCopy.line1}
         </p>
-        <p className="tracked-label drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">{footerCopy.line2}</p>
+        <p className="tracked-label !tracking-[0.1em] drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">{footerCopy.line2}</p>
         <p className="sr-only">
           {site.couple.groom} &amp; {site.couple.bride}, {site.date.range}
         </p>

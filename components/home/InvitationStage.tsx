@@ -220,11 +220,11 @@ export function InvitationStage() {
           animate={
             groomOn
               ? meme
-                ? { x: "2%", opacity: 1, scaleX: groomRight, height: "46%" }
+                ? { left: "6%", x: "0%", opacity: 1, scaleX: groomRight, height: "46%" }
                 : meet
-                  ? { x: "14%", opacity: 1, scaleX: groomRight, height: "50%" }
-                  : { x: "6%", opacity: 1, scaleX: 1, height: "64%" }
-              : { x: "-120%", opacity: 0, scaleX: 1, height: "64%" }
+                  ? { left: "16%", x: "0%", opacity: 1, scaleX: groomRight, height: "50%" }
+                  : { left: "50%", x: "-50%", opacity: 1, scaleX: 1, height: "64%" } // solo: centred
+              : { left: "0%", x: "-120%", opacity: 0, scaleX: 1, height: "64%" }
           }
           transition={{ duration: 1.1, ease }}
           style={{ aspectRatio: ratio(art.groom), transformOrigin: "bottom center" }}
