@@ -20,11 +20,10 @@ import { art, ratio, faceScale, isLandscape } from "@/content/art";
  * vector paper backdrop.
  */
 
-type SceneId = "intro" | "arch" | "invite" | "groom" | "bride" | "date" | "wait" | "meme";
+type SceneId = "intro" | "arch" | "groom" | "bride" | "date" | "wait" | "meme";
 const SCENES: { id: SceneId; ms: number }[] = [
   { id: "intro", ms: 4600 },
-  { id: "arch", ms: 4800 },
-  { id: "invite", ms: 4400 },
+  { id: "arch", ms: 7200 },
   { id: "groom", ms: 4000 },
   { id: "bride", ms: 4000 },
   { id: "date", ms: 7000 },
@@ -145,8 +144,7 @@ export function InvitationStage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  const showTent = started && index >= 2;
-  const showArch = started && index === 1;
+  const showArch = started && index >= 1;
   const meme = scene === "meme";
   const groomOn = scene === "groom" || scene === "date" || meme;
   const brideOn = scene === "bride" || scene === "date" || meme;
@@ -155,7 +153,7 @@ export function InvitationStage() {
   const brideLeft = faceScale(art.bride, "left");
   const bs = art.bride.scale;
   // first three frames centre their text in the stage; the rest sit in the upper band above the couple
-  const centredText = scene === "intro" || scene === "arch" || scene === "invite";
+  const centredText = scene === "intro" || scene === "arch";
 
   return (
     <section
@@ -210,9 +208,9 @@ export function InvitationStage() {
               className="absolute inset-0"
               initial={reduce ? false : { clipPath: "circle(0% at 50% 72%)", scale: 1.08, opacity: 0.6 }}
               animate={{ clipPath: "circle(120% at 50% 72%)", scale: 1, opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.8 } }}
               transition={{ duration: 1.8, ease, delay: 0.45 }}
             >
+              <div className={cn("absolute inset-0", !reduce && "kenburns")}>
               <Image
                 src={art.background.src}
                 alt={art.background.alt}
@@ -221,37 +219,10 @@ export function InvitationStage() {
                 sizes="(max-width: 768px) 100vw, 660px"
                 className={cn("object-cover", isLandscape ? "object-center" : "object-bottom")}
               />
-              <div
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-[42%]"
-                style={{ background: "linear-gradient(to bottom, rgba(245,244,237,0.72) 0%, rgba(245,244,237,0.45) 45%, transparent 100%)" }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* TENT scene: torn-paper wipe up, then stays as the set */}
-        <AnimatePresence>
-          {showTent && (
-            <motion.div
-              key="tent"
-              className="absolute inset-0 torn-wipe-top"
-              initial={reduce ? false : { y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1.2, ease }}
-            >
-              <div className={cn("absolute inset-0", !reduce && "kenburns")}>
-                <Image
-                  src={art.background.src}
-                  alt={art.background.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 660px"
-                  className={cn("object-cover", isLandscape ? "object-center" : "object-bottom")}
-                />
               </div>
               <div
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-[48%]"
+                className="absolute inset-x-0 top-0 h-[42%]"
                 style={{ background: "linear-gradient(to bottom, rgba(245,244,237,0.72) 0%, rgba(245,244,237,0.45) 45%, transparent 100%)" }}
               />
             </motion.div>
@@ -398,21 +369,23 @@ export function InvitationStage() {
                   {site.couple.brideShort}
                 </p>
                 <p className="tracked-label mt-3">{site.date.range}</p>
-              </motion.div>
-            )}
-
-            {scene === "invite" && (
-              <motion.div key="t-invite" {...fade} transition={{ duration: 0.9, ease, delay: 0.5 }}>
-                <p className="font-serif uppercase tracking-[0.22em] text-[color:var(--color-bark)] text-sm leading-loose">
-                  {home.invite}
-                  <br />
-                  {home.stage.inviteLine}
-                </p>
-                <p className="font-serif italic text-[color:var(--color-ink)]/75 mt-4 text-base">
-                  {home.request}
-                  <br />
-                  {home.celebration}
-                </p>
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.6, duration: 0.9 }}
+                  className="mt-7"
+                >
+                  <p className="font-serif uppercase tracking-[0.22em] text-[color:var(--color-bark)] text-sm leading-loose">
+                    {home.invite}
+                    <br />
+                    {home.stage.inviteLine}
+                  </p>
+                  <p className="font-serif italic text-[color:var(--color-ink)]/80 mt-3 text-base">
+                    {home.request}
+                    <br />
+                    {home.celebration}
+                  </p>
+                </motion.div>
               </motion.div>
             )}
 
@@ -456,8 +429,8 @@ export function InvitationStage() {
                       <span className="tracked-label block mt-2 text-[0.6rem]">{ev.weekday}</span>
                       <span className="font-serif font-light text-5xl text-[color:var(--color-tan)] block leading-none my-0.5">{ev.day}</span>
                       <span className="tracked-label block text-[0.6rem]">{ev.monthShort} · {ev.time}</span>
-                      <p className="font-serif uppercase tracking-[0.14em] text-[0.62rem] text-[color:var(--color-bark)] mt-2 leading-snug">{ev.venue.name}</p>
-                      <p className="font-serif italic text-[0.7rem] text-[color:var(--color-ink)]/70 leading-snug">{ev.venue.line1}, {ev.venue.line2}</p>
+                      <p className="font-sans font-semibold uppercase tracking-[0.12em] text-[0.66rem] text-[color:var(--color-bark)] mt-2 leading-snug">{ev.venue.name}</p>
+                      <p className="font-sans font-semibold text-[0.66rem] text-[color:var(--color-ink)] leading-snug mt-1">{ev.venue.line1}, {ev.venue.line2}</p>
                     </motion.div>
                   ))}
                 </div>
