@@ -14,7 +14,7 @@ export function Footer() {
       <div aria-hidden className="relative w-full md:w-1/2 aspect-square -z-10 opacity-80">
         <Image src="/art/footer.png" alt="" fill sizes="50vw" className="object-contain object-bottom" />
       </div>
-      <div className="absolute inset-x-0 top-[6%] md:top-[10%] mx-auto max-w-3xl px-6 text-center flex flex-col items-center gap-3">
+      <div className="absolute inset-x-0 top-[11%] md:top-[15%] mx-auto max-w-3xl px-6 text-center flex flex-col items-center gap-3">
         <p className="font-script text-4xl md:text-5xl text-[color:var(--color-bark)] drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
           {footerCopy.line1}
         </p>
