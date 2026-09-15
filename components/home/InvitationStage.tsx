@@ -153,6 +153,7 @@ export function InvitationStage() {
   const meet = scene === "date" || meme;
   const groomRight = faceScale(art.groom, "right");
   const brideLeft = faceScale(art.bride, "left");
+  const bs = art.bride.scale;
 
   return (
     <section
@@ -280,11 +281,11 @@ export function InvitationStage() {
           animate={
             brideOn
               ? meme
-                ? { x: "-4%", opacity: 1, scaleX: brideLeft, height: "46%" }
+                ? { x: "-4%", opacity: 1, scaleX: brideLeft, height: `${46 * bs}%` }
                 : meet
-                  ? { x: "-14%", opacity: 1, scaleX: brideLeft, height: "50%" }
-                  : { x: "-4%", opacity: 1, scaleX: 1, height: "64%" }
-              : { x: "120%", opacity: 0, scaleX: 1, height: "64%" }
+                  ? { x: "-14%", opacity: 1, scaleX: brideLeft, height: `${50 * bs}%` }
+                  : { x: "-4%", opacity: 1, scaleX: 1, height: `${64 * bs}%` }
+              : { x: "120%", opacity: 0, scaleX: 1, height: `${64 * bs}%` }
           }
           transition={{ duration: 1.1, ease, delay: meet ? 0.15 : 0 }}
           style={{ aspectRatio: ratio(art.bride), transformOrigin: "bottom center" }}

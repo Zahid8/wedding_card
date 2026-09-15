@@ -8,8 +8,8 @@ export function CoupleCards() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-12">
       {[
-        { ...story.groom, art: art.groom.src, aspect: ratio(art.groom), flip: faceClass(art.groom, "right"), right: false },
-        { ...story.bride, art: art.bride.src, aspect: ratio(art.bride), flip: faceClass(art.bride, "left"), right: true },
+        { ...story.groom, art: art.groom.src, aspect: ratio(art.groom), flip: faceClass(art.groom, "right"), scale: art.groom.scale, right: false },
+        { ...story.bride, art: art.bride.src, aspect: ratio(art.bride), flip: faceClass(art.bride, "left"), scale: art.bride.scale, right: true },
       ].map((p, i) => (
         <Reveal key={p.name} delay={i * 0.1}>
           <div className="relative flex flex-col items-center text-center">
@@ -29,6 +29,7 @@ export function CoupleCards() {
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
                 className={`object-contain object-bottom ${p.flip}`}
+                style={{ transform: `scale(${p.scale})`, transformOrigin: "bottom center" }}
               />
             </div>
             <div className="mt-6">

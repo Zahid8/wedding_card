@@ -41,7 +41,7 @@ g = Image.open(pub(groom["src"])).convert("RGBA")
 if groom["facing"] == "left": g = g.transpose(Image.FLIP_LEFT_RIGHT)   # groom stands left, faces right
 r = Image.open(pub(bride["src"])).convert("RGBA")
 if bride["facing"] == "right": r = r.transpose(Image.FLIP_LEFT_RIGHT)   # bride stands right, faces left
-g = fit(g, 500); r = fit(r, 470)
+g = fit(g, int(500 * float(groom.get("scale", 1)))); r = fit(r, int(500 * float(bride.get("scale", 1))))
 cx = W - bw // 2; base = H - 42
 img.paste(g, (cx - 10 - g.width, base - g.height), g); img.paste(r, (cx - 30, base - r.height), r)
 
