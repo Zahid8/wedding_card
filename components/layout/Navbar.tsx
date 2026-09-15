@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { curtain } from "@/components/home/curtainState";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
@@ -10,6 +11,8 @@ import { MobileMenu } from "./MobileMenu";
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const curtainOpen = useSyncExternalStore(curtain.subscribe, curtain.get, () => false);
+  const hideBrand = pathname === "/" && curtainOpen;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,7 +31,15 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:py-5">
-        <Link href="/" className="flex items-baseline gap-1 font-script text-2xl md:text-3xl text-[color:var(--color-bark)]">
+        <Link
+          href="/"
+          aria-hidden={hideBrand}
+          tabIndex={hideBrand ? -1 : 0}
+          className={cn(
+            "brand-label flex items-baseline gap-1 font-script text-2xl md:text-3xl text-[color:var(--color-bark)] transition-opacity duration-700",
+            hideBrand && "opacity-0 pointer-events-none",
+          )}
+        >
           <span>{site.couple.groomShort}</span>
           <span className="text-[color:var(--color-coral)] px-1">&amp;</span>
           <span>{site.couple.brideShort}</span>

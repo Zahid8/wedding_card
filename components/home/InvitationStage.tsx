@@ -8,8 +8,8 @@ import { Wash } from "@/components/paper/Wash";
 import { Foliage } from "@/components/paper/Foliage";
 import { cn } from "@/lib/utils";
 import { Blossoms, type Bloom } from "@/components/paper/Blossoms";
-import { FlowerCurtain } from "@/components/paper/FlowerCurtain";
 import { music } from "@/components/audio/music";
+import { curtain } from "./curtainState";
 import { art, ratio, faceScale, isLandscape } from "@/content/art";
 
 /**
@@ -56,34 +56,13 @@ export function InvitationStage() {
     return ok;
   }, []);
 
-  // Try to open with music straight away; if the browser blocks autoplay,
-  // wait for a tap on the curtain (fallback: open silently after a while).
+  // The curtain waits for a tap (that gesture also unlocks the music).
+  // Reduced-motion users skip straight to the opened state.
   useEffect(() => {
-    let cancelled = false;
-    let fallback: ReturnType<typeof setTimeout> | null = null;
-    if (reduce) {
-      fallback = setTimeout(() => setOpened(true), 0);
-      return () => {
-        if (fallback) clearTimeout(fallback);
-      };
-    }
-    // deferred so no state is set synchronously inside the effect
-    const kick = setTimeout(() => {
-      startMusic().then((ok) => {
-        if (cancelled) return;
-        if (ok) setOpened(true);
-        else {
-          setSound("off");
-          fallback = setTimeout(() => setOpened(true), 7000);
-        }
-      });
-    }, 0);
-    return () => {
-      cancelled = true;
-      clearTimeout(kick);
-      if (fallback) clearTimeout(fallback);
-    };
-  }, [run, reduce, startMusic]);
+    if (!reduce) return;
+    const t = setTimeout(() => setOpened(true), 0);
+    return () => clearTimeout(t);
+  }, [run, reduce]);
 
   const openWithMusic = useCallback(() => {
     startMusic();
@@ -97,11 +76,15 @@ export function InvitationStage() {
       () => {
         setStarted(true);
         setPlaying(!reduce);
+        curtain.set(true);
       },
       reduce ? 0 : CURTAIN_MS,
     );
     return () => clearTimeout(t);
   }, [opened, run, reduce]);
+
+  // leaving the page resets the flag so the brand shows again elsewhere
+  useEffect(() => () => curtain.set(false), []);
 
   const scene: SceneId | null = started ? SCENES[index].id : null;
   const go = useCallback((i: number) => setIndex(Math.max(0, Math.min(LAST, i))), []);
@@ -109,6 +92,7 @@ export function InvitationStage() {
   const prev = useCallback(() => go(index - 1), [go, index]);
   const replay = useCallback(() => {
     music.restart();
+    curtain.set(false);
     setStarted(false);
     setPlaying(false);
     setOpened(false);
@@ -272,14 +256,13 @@ export function InvitationStage() {
           {meme && (
             <motion.div
               key="meme-curtain"
-              className="absolute left-[36%] -translate-x-1/2 top-[27%] bottom-0 w-[20%]"
-              initial={reduce ? false : { y: "-110%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              className="absolute left-[38%] -translate-x-1/2 top-[24%] bottom-0 w-[3px] rounded-full bg-[color:var(--color-bark)]/85 shadow-[0_0_0_1px_rgba(245,244,237,0.5)]"
+              initial={reduce ? false : { scaleY: 0, opacity: 0 }}
+              animate={{ scaleY: 1, opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.1, ease }}
-            >
-              <FlowerCurtain className="h-full w-full" />
-            </motion.div>
+              style={{ transformOrigin: "top center" }}
+            />
           )}
           {meme && (
             <motion.div
@@ -533,7 +516,7 @@ export function InvitationStage() {
         <div aria-hidden className="hidden md:block absolute inset-x-0 top-0 h-6 torn-bottom bg-[color:var(--color-paper)] rotate-180 pointer-events-none" />
       </div>
 
-      <Curtains key={run} reduce={!!reduce} open={opened} onOpen={openWithMusic} showPrompt={!opened && sound === "off"} />
+      <Curtains key={run} reduce={!!reduce} open={opened} onOpen={openWithMusic} showPrompt={!opened} />
     </section>
   );
 }
@@ -592,12 +575,12 @@ function Curtains({
             onClick={onOpen}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-3 text-[color:var(--color-bark)]"
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-4 text-[color:var(--color-bark)]"
           >
-            <span className="font-script text-3xl leading-none">Open the invitation</span>
-            <span className="tracked-label text-[0.6rem]">tap to open</span>
+            <span className="font-script text-3xl leading-none drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">Open the invitation</span>
+            <span className="tap-btn">Tap to open</span>
           </motion.button>
         )}
       </AnimatePresence>

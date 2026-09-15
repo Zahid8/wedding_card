@@ -157,6 +157,38 @@ body {
   border: 1px solid var(--color-tan);
 }
 
+/* Big red call-to-action on the closed curtain */
+.tap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 2.2rem;
+  border-radius: 999px;
+  background: #c0392b;
+  color: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 30px -12px rgba(192, 57, 43, 0.8), 0 0 0 6px rgba(192, 57, 43, 0.14);
+  animation: tapPulse 1.8s ease-in-out infinite;
+}
+@keyframes tapPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 14px 30px -12px rgba(192, 57, 43, 0.8), 0 0 0 6px rgba(192, 57, 43, 0.14); }
+  50% { transform: scale(1.05); box-shadow: 0 16px 34px -12px rgba(192, 57, 43, 0.9), 0 0 0 12px rgba(192, 57, 43, 0.08); }
+}
+@media (prefers-reduced-motion: reduce) { .tap-btn { animation: none; } }
+
+/* Paper label behind the header wordmark */
+.brand-label {
+  background: color-mix(in oklab, var(--color-paper) 92%, white);
+  border: 1px solid color-mix(in oklab, var(--color-tan) 45%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.9rem 0.3rem;
+  box-shadow: 0 6px 18px -10px rgba(87, 52, 30, 0.45);
+}
+
 .brush-underline {
   background-image: url("/masks/brush-rule.svg");
   background-repeat: no-repeat;
