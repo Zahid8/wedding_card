@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site, home, story } from "@/content/site";
@@ -11,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Blossoms, type Bloom } from "@/components/paper/Blossoms";
 import { FlowerCurtain } from "@/components/paper/FlowerCurtain";
 import { music } from "@/components/audio/music";
+import { art, ratio, faceScale } from "@/content/art";
 
 /**
  * Full-screen animated invitation. Flower-decorated drapes part first, then
@@ -20,7 +20,7 @@ import { music } from "@/components/audio/music";
  * vector paper backdrop.
  */
 
-type SceneId = "intro" | "arch" | "invite" | "groom" | "bride" | "date" | "rsvp" | "wait" | "meme";
+type SceneId = "intro" | "arch" | "invite" | "groom" | "bride" | "date" | "wait" | "meme";
 const SCENES: { id: SceneId; ms: number }[] = [
   { id: "intro", ms: 4600 },
   { id: "arch", ms: 4800 },
@@ -28,7 +28,6 @@ const SCENES: { id: SceneId; ms: number }[] = [
   { id: "groom", ms: 4000 },
   { id: "bride", ms: 4000 },
   { id: "date", ms: 7000 },
-  { id: "rsvp", ms: 5000 },
   { id: "wait", ms: 2800 },
   { id: "meme", ms: 0 },
 ];
@@ -149,9 +148,11 @@ export function InvitationStage() {
   const showTent = started && index >= 2;
   const showArch = started && index === 1;
   const meme = scene === "meme";
-  const groomOn = scene === "groom" || scene === "date" || scene === "rsvp" || meme;
-  const brideOn = scene === "bride" || scene === "date" || scene === "rsvp" || meme;
-  const meet = scene === "date" || scene === "rsvp" || meme;
+  const groomOn = scene === "groom" || scene === "date" || meme;
+  const brideOn = scene === "bride" || scene === "date" || meme;
+  const meet = scene === "date" || meme;
+  const groomRight = faceScale(art.groom, "right");
+  const brideLeft = faceScale(art.bride, "left");
 
   return (
     <section
@@ -209,8 +210,8 @@ export function InvitationStage() {
               transition={{ duration: 1.8, ease, delay: 0.45 }}
             >
               <Image
-                src="/art/scene-arch.png"
-                alt="Watercolor wedding arch with sheer drapes, the bride and groom standing beneath"
+                src={art.background.src}
+                alt={art.background.alt}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 500px"
@@ -237,8 +238,8 @@ export function InvitationStage() {
             >
               <div className={cn("absolute inset-0", !reduce && "kenburns")}>
                 <Image
-                  src="/art/scene-tent.png"
-                  alt="Watercolor canvas tent with wooden chairs beneath an olive tree"
+                  src={art.background.src}
+                  alt={art.background.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 500px"
                   className="object-cover object-bottom"
@@ -260,16 +261,16 @@ export function InvitationStage() {
           animate={
             groomOn
               ? meme
-                ? { x: "10%", opacity: 1, scaleX: -1, height: "46%" }
+                ? { x: "10%", opacity: 1, scaleX: groomRight, height: "46%" }
                 : meet
-                  ? { x: "22%", opacity: 1, scaleX: -1, height: "50%" }
+                  ? { x: "22%", opacity: 1, scaleX: groomRight, height: "50%" }
                   : { x: "6%", opacity: 1, scaleX: 1, height: "64%" }
               : { x: "-120%", opacity: 0, scaleX: 1, height: "64%" }
           }
           transition={{ duration: 1.1, ease }}
-          style={{ aspectRatio: "248 / 972", transformOrigin: "bottom center" }}
+          style={{ aspectRatio: ratio(art.groom), transformOrigin: "bottom center" }}
         >
-          <Image src="/art/groom.png" alt="" fill priority sizes="220px" className="object-contain object-bottom" />
+          <Image src={art.groom.src} alt="" fill priority sizes="220px" className="object-contain object-bottom" />
         </motion.div>
 
         {/* BRIDE cutout */}
@@ -279,16 +280,16 @@ export function InvitationStage() {
           animate={
             brideOn
               ? meme
-                ? { x: "-4%", opacity: 1, scaleX: -1, height: "46%" }
+                ? { x: "-4%", opacity: 1, scaleX: brideLeft, height: "46%" }
                 : meet
-                  ? { x: "-14%", opacity: 1, scaleX: -1, height: "50%" }
+                  ? { x: "-14%", opacity: 1, scaleX: brideLeft, height: "50%" }
                   : { x: "-4%", opacity: 1, scaleX: 1, height: "64%" }
               : { x: "120%", opacity: 0, scaleX: 1, height: "64%" }
           }
           transition={{ duration: 1.1, ease, delay: meet ? 0.15 : 0 }}
-          style={{ aspectRatio: "433 / 953", transformOrigin: "bottom center" }}
+          style={{ aspectRatio: ratio(art.bride), transformOrigin: "bottom center" }}
         >
-          <Image src="/art/bride-roses.png" alt="" fill priority sizes="300px" className="object-contain object-bottom" />
+          <Image src={art.bride.src} alt="" fill priority sizes="300px" className="object-contain object-bottom" />
         </motion.div>
 
         {/* MEME: flower curtain drops between them, then the bubbles */}
@@ -446,14 +447,6 @@ export function InvitationStage() {
               </motion.div>
             )}
 
-            {scene === "rsvp" && (
-              <motion.div key="t-rsvp" {...fade} transition={{ duration: 0.9, ease, delay: 0.3 }} className="md:-mt-[10%] pointer-events-auto">
-                <p className="font-script text-5xl leading-tight text-[color:var(--color-bark)]">{home.closing}</p>
-                <Link href="/rsvp" className="stamp-btn stamp-btn-coral mt-6">
-                  RSVP Now
-                </Link>
-              </motion.div>
-            )}
             {scene === "wait" && (
               <motion.div key="t-wait" {...fade} transition={{ duration: 0.7, ease }} className="md:-mt-[6%]">
                 <p className="font-script text-6xl leading-none text-[color:var(--color-bark)]">{home.meme.waitScript}</p>

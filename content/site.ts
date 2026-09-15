@@ -121,13 +121,11 @@ export const site = {
   venue: nikah.venue,
   contactPhone: "+91 84473 71925",
   contactPhoneTel: "+918447371925",
-  rsvpDeadline: "September 20, 2026",
   credit: "designed with love",
   nav: [
     { href: "/", label: "Welcome" },
     { href: "/our-story", label: "Our Story" },
     { href: "/schedule", label: "Schedule" },
-    { href: "/rsvp", label: "RSVP" },
     { href: "/travel", label: "Travel" },
   ],
 } as const;
@@ -142,7 +140,6 @@ export const home = {
     "We are overjoyed to invite you to share in the celebration of our love. Your presence would mean the world to us as we begin this beautiful journey together.",
     "This website has all the information you need about our special day. We can't wait to celebrate with you!",
   ],
-  closing: "Will you join us?",
   meme: {
     waitScript: "But wait…",
     waitLabel: "there's more",
@@ -235,37 +232,6 @@ export const schedule = {
       desc: "An evening of celebration and a lavish dinner with family and friends",
     },
   ],
-} as const;
-
-export const rsvpCopy = {
-  heading: "RSVP",
-  subtitle:
-    "We would be honored by your presence. Please let us know if you can join us on our special day.",
-  deadline: "Please respond by September 20, 2026",
-  fields: {
-    name: { label: "Full Name", placeholder: "Enter your full name" },
-    phone: { label: "Phone Number", placeholder: "+91 98765 43210" },
-    attending: { label: "Will you be attending?" },
-    guests: { label: "Number of Guests" },
-    dietary: {
-      label: "Dietary Requirements",
-      placeholder: "Any allergies or dietary restrictions?",
-    },
-  },
-  guestOptions: [
-    { value: "1", label: "1 Guest" },
-    { value: "2", label: "2 Guests" },
-    { value: "3", label: "3 Guests" },
-    { value: "4", label: "4 Guests" },
-    { value: "5+", label: "5+ Guests" },
-  ],
-  submit: "Submit RSVP",
-  success: {
-    accept: (name: string) =>
-      `Thank you, ${name}. We can't wait to celebrate with you.`,
-    decline: (name: string) =>
-      `We'll miss you, ${name}. Thank you for letting us know.`,
-  },
 } as const;
 
 export const travel = {

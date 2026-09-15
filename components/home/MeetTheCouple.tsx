@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { story } from "@/content/site";
+import { art, ratio, faceClass } from "@/content/art";
 import { Reveal } from "@/components/motion/Reveal";
 import { BrushRule } from "@/components/paper/BrushRule";
 
@@ -11,8 +12,8 @@ export function MeetTheCouple() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-10 md:gap-6 items-stretch">
           <Reveal>
             <article className="relative flex flex-col md:flex-row items-center gap-6 paper-card torn-top torn-bottom p-8">
-              <div className="relative shrink-0 w-32 md:w-40 aspect-[248/972] h-64 md:h-80">
-                <Image src="/art/groom.png" alt="Illustrated groom" fill sizes="200px" className="object-contain object-bottom -scale-x-100" />
+              <div className="relative shrink-0 w-32 md:w-40 h-64 md:h-80" style={{ aspectRatio: ratio(art.groom) }}>
+                <Image src={art.groom.src} alt={art.groom.alt} fill sizes="200px" className={`object-contain object-bottom ${faceClass(art.groom, "right")}`} />
               </div>
               <div className="text-center md:text-left">
                 <span className="tracked-label">{story.groom.label}</span>
@@ -32,8 +33,8 @@ export function MeetTheCouple() {
 
           <Reveal delay={0.1}>
             <article className="relative flex flex-col md:flex-row-reverse items-center gap-6 paper-card torn-top torn-bottom p-8">
-              <div className="relative shrink-0 w-32 md:w-44 aspect-[433/953] h-64 md:h-80">
-                <Image src="/art/bride-roses.png" alt="Illustrated bride" fill sizes="220px" className="object-contain object-bottom -scale-x-100" />
+              <div className="relative shrink-0 w-32 md:w-44 h-64 md:h-80" style={{ aspectRatio: ratio(art.bride) }}>
+                <Image src={art.bride.src} alt={art.bride.alt} fill sizes="220px" className={`object-contain object-bottom ${faceClass(art.bride, "left")}`} />
               </div>
               <div className="text-center md:text-right">
                 <span className="tracked-label">{story.bride.label}</span>

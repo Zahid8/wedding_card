@@ -27,48 +27,15 @@ Vercel redeploys automatically on every push to `main`.
 3. Click **Deploy**. First build takes about 2 minutes.
 4. Open the `*.vercel.app` URL. Set the same URL as `site.url` in `content/site.ts` so share previews resolve, then push.
 
-## 4. RSVP storage (optional)
-
-Without any env vars, RSVPs are accepted and logged to Vercel runtime logs (Project → Logs). To persist them, add env vars under **Project → Settings → Environment Variables** and redeploy.
-
-**Option A: Supabase (preferred)**
-
-| Variable | Value |
-|---|---|
-| `SUPABASE_URL` | `https://<project>.supabase.co` |
-| `SUPABASE_SERVICE_ROLE_KEY` | service role key from Project Settings → API |
-| `SUPABASE_RSVP_TABLE` | `rsvps` (default) |
-
-Create the table in the Supabase SQL editor:
-
-```sql
-create table rsvps (
-  id uuid primary key default gen_random_uuid(),
-  created_at timestamptz not null default now(),
-  name text not null,
-  phone text,
-  attending text not null,
-  guests text not null,
-  dietary text
-);
-```
-
-**Option B: Webhook (Google Sheets via Zapier or Make)**
-
-| Variable | Value |
-|---|---|
-| `RSVP_WEBHOOK_URL` | the webhook URL |
-
-Ignored if Supabase vars are set. Payload is JSON with `name`, `phone`, `attending`, `guests`, `dietary`, `timestamp`.
-
-## 5. Custom domain (optional)
+## 4. Custom domain (optional)
 
 **Project → Settings → Domains → Add**, then create the DNS records Vercel shows at your registrar. HTTPS is automatic.
 
-## 6. WhatsApp / social preview
+## 5. WhatsApp / social preview
 
 The link preview image is `app/opengraph-image.jpg` (1200×630, under 300 KB as WhatsApp requires). Replace that file (and `app/twitter-image.jpg`) to change it. On Vercel the absolute URL is taken from the production deployment host automatically; to force a specific domain set `NEXT_PUBLIC_SITE_URL=https://your-domain`. WhatsApp caches previews per URL for a day or more, so test with a fresh query string such as `?v=2` after redeploying.
 
-## 7. Editing content
+## 6. Editing content
 
-All text, names, dates, venues, phone, and map links live in `content/site.ts`. Artwork is in `public/art/`. Edit, commit, push.
+- Text, names, dates, venues, phone, map links: `content/site.ts`.
+- Artwork (bride, groom, background): `content/art.ts`. Drop new files in `public/art/`, update the three entries (path, pixel size, which way the character faces), then run `python3 scripts/make-og.py` to refresh the WhatsApp preview. Commit and push.
