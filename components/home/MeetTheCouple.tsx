@@ -12,7 +12,7 @@ export function MeetTheCouple() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-10 md:gap-6 items-stretch">
           <Reveal>
             <article className="relative flex flex-col md:flex-row items-center gap-6 paper-card torn-top torn-bottom p-8">
-              <div className="relative shrink-0 w-32 md:w-40 h-64 md:h-80" style={{ aspectRatio: ratio(art.groom) }}>
+              <div className="relative shrink-0 h-64 md:h-80" style={{ aspectRatio: ratio(art.groom) }}>
                 <Image src={art.groom.src} alt={art.groom.alt} fill sizes="200px" className={`object-contain object-bottom ${faceClass(art.groom, "right")}`} />
               </div>
               <div className="text-center md:text-left">
@@ -33,7 +33,7 @@ export function MeetTheCouple() {
 
           <Reveal delay={0.1}>
             <article className="relative flex flex-col md:flex-row-reverse items-center gap-6 paper-card torn-top torn-bottom p-8">
-              <div className="relative shrink-0 w-32 md:w-44 h-64 md:h-80" style={{ aspectRatio: ratio(art.bride), transform: `scale(${art.bride.scale})`, transformOrigin: "bottom center" }}>
+              <div className="relative shrink-0 h-64 md:h-80" style={{ aspectRatio: ratio(art.bride) }}>
                 <Image src={art.bride.src} alt={art.bride.alt} fill sizes="220px" className={`object-contain object-bottom ${faceClass(art.bride, "left")}`} />
               </div>
               <div className="text-center md:text-right">
