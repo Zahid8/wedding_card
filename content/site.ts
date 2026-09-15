@@ -132,6 +132,7 @@ export const site = {
 
 export const home = {
   bismillah: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+  bismillahTranslation: "In the name of Allah, the Most Gracious, the Most Merciful",
   invite: "Together with their families",
   request: "Request the pleasure of your company",
   celebration: "at the celebration of their marriage",

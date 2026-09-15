@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Pinyon_Script, Cormorant_Garamond, Jost, Amiri } from "next/font/google";
+import { Cormorant_Garamond, Montserrat, Amiri } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -7,22 +7,19 @@ import { Footer } from "@/components/layout/Footer";
 import { BackgroundMusic } from "@/components/audio/BackgroundMusic";
 import { site } from "@/content/site";
 
-const script = Pinyon_Script({
-  variable: "--font-script",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
+// Type system borrowed from the reference invitation: Cormorant Garamond for
+// headings, names and body, Montserrat for labels and UI, Amiri for Arabic.
 const serif = Cormorant_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
-const sans = Jost({
+const sans = Montserrat({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 const arabic = Amiri({
@@ -61,7 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${script.variable} ${serif.variable} ${sans.variable} ${arabic.variable} h-full antialiased`}
+      className={`${serif.variable} ${sans.variable} ${arabic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />

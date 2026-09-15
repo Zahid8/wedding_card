@@ -58,7 +58,7 @@ img.paste(g, (cx - 10 - g.width, base - g.height), g); img.paste(r, (cx - 30, ba
 
 d = ImageDraw.Draw(img)
 bark, tan, coral, ink = (87, 52, 30), (140, 100, 70), (232, 135, 122), (51, 35, 28)
-script = font("Pinyon+Script", 88); names = font("Cormorant+Garamond:wght@500", 44)
+script = font("Cormorant+Garamond:wght@600", 78); names = font("Cormorant+Garamond:wght@500", 44)
 label = font("Cormorant+Garamond:wght@500", 22); body = font("Cormorant+Garamond:wght@500", 25)
 def spaced(x, y, t, f, fill, sp):
     for c in t: d.text((x, y), c, font=f, fill=fill); x += d.textlength(c, font=f) + sp
@@ -66,7 +66,7 @@ L = 72
 spaced(L, 92, "TOGETHER WITH THEIR FAMILIES", label, tan, 3)
 d.text((L - 4, 112), "Wedding Invitation", font=script, fill=bark)
 d.text((L, 250), "Mohd. Saif Uddin", font=names, fill=ink)
-d.text((L, 300), "&", font=font("Pinyon+Script", 46), fill=coral)
+d.text((L, 300), "&", font=font("Cormorant+Garamond:wght@600", 44), fill=coral)
 d.text((L, 340), "Farhat Khatoon", font=names, fill=ink)
 d.line((L, 410, L + 120, 410), fill=(161, 121, 90), width=1)
 spaced(L, 428, "NIKAH", label, bark, 3);  d.text((L, 452), "Friday, 25 September 2026 · 8 PM · Inam Vihar, Ghaziabad", font=body, fill=ink)

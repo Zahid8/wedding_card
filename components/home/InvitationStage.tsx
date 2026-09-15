@@ -341,7 +341,15 @@ export function InvitationStage() {
               <motion.div key="t-intro" {...fade} transition={{ duration: 0.9, ease }}>
                 <p className="font-arabic text-xl text-[color:var(--color-tan)]">{home.bismillah}</p>
                 <motion.p
-                  className="tracked-label mt-8"
+                  className="font-serif italic text-sm text-[color:var(--color-ink)]/75 mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                  {home.bismillahTranslation}
+                </motion.p>
+                <motion.p
+                  className="tracked-label mt-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7, duration: 0.8 }}
@@ -349,7 +357,7 @@ export function InvitationStage() {
                   {home.stage.invitedTo}
                 </motion.p>
                 <motion.h1
-                  className="font-script text-6xl leading-[0.95] text-[color:var(--color-bark)] mt-6"
+                  className="font-script text-4xl leading-tight text-[color:var(--color-bark)] mt-5"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.3, duration: 1 }}
@@ -357,7 +365,7 @@ export function InvitationStage() {
                   {site.couple.groom}
                 </motion.h1>
                 <motion.span
-                  className="block font-script text-4xl text-[color:var(--color-coral)] my-1"
+                  className="block font-script text-2xl text-[color:var(--color-coral)] my-1"
                   initial={{ opacity: 0, scale: 0.7 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 2.1, duration: 0.6 }}
@@ -365,7 +373,7 @@ export function InvitationStage() {
                   &amp;
                 </motion.span>
                 <motion.h1
-                  className="font-script text-6xl leading-[0.95] text-[color:var(--color-bark)]"
+                  className="font-script text-4xl leading-tight text-[color:var(--color-bark)]"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 2.5, duration: 1 }}
@@ -377,7 +385,7 @@ export function InvitationStage() {
 
             {scene === "arch" && (
               <motion.div key="t-arch" {...fade} transition={{ duration: 0.9, ease, delay: 0.6 }} className="md:-mt-[8%]">
-                <p className="font-script text-4xl leading-tight text-[color:var(--color-bark)]">
+                <p className="font-script text-3xl leading-tight text-[color:var(--color-bark)]">
                   {site.couple.groomShort}{" "}
                   <span className="text-[color:var(--color-coral)]">&amp;</span>{" "}
                   {site.couple.brideShort}
@@ -404,7 +412,7 @@ export function InvitationStage() {
             {scene === "groom" && (
               <motion.div key="t-groom" {...fade} transition={{ duration: 0.9, ease, delay: 0.4 }} className="text-right pr-1 md:-mt-[10%]">
                 <span className="tracked-label">{home.stage.groomLabel}</span>
-                <h2 className="font-script text-5xl leading-[1] text-[color:var(--color-bark)] mt-3">
+                <h2 className="font-script text-4xl leading-tight text-[color:var(--color-bark)] mt-3">
                   {story.groom.name.split(" ").slice(0, -1).join(" ")}
                   <br />
                   {story.groom.name.split(" ").slice(-1)[0]}
@@ -415,7 +423,7 @@ export function InvitationStage() {
             {scene === "bride" && (
               <motion.div key="t-bride" {...fade} transition={{ duration: 0.9, ease, delay: 0.4 }} className="text-left pl-1 md:-mt-[10%]">
                 <span className="tracked-label">{home.stage.brideLabel}</span>
-                <h2 className="font-script text-5xl leading-[1] text-[color:var(--color-bark)] mt-3">
+                <h2 className="font-script text-4xl leading-tight text-[color:var(--color-bark)] mt-3">
                   {story.bride.name.split(" ")[0]}
                   <br />
                   {story.bride.name.split(" ").slice(1).join(" ")}
@@ -436,7 +444,7 @@ export function InvitationStage() {
                       className={i === 0 ? "border-r border-[color:var(--color-tan)]/40 pr-3" : "pl-1"}
                     >
                       <span className="font-arabic text-lg text-[color:var(--color-tan)] block leading-none">{ev.arabic}</span>
-                      <span className="font-script text-3xl text-[color:var(--color-bark)] block leading-tight">{ev.name}</span>
+                      <span className="font-script text-2xl text-[color:var(--color-bark)] block leading-tight">{ev.name}</span>
                       <div className="mt-1 h-px bg-[color:var(--color-tan)]/50 mx-auto w-10" />
                       <span className="tracked-label block mt-2 text-[0.6rem]">{ev.weekday}</span>
                       <span className="font-serif font-light text-5xl text-[color:var(--color-tan)] block leading-none my-0.5">{ev.day}</span>
@@ -451,7 +459,7 @@ export function InvitationStage() {
 
             {scene === "wait" && (
               <motion.div key="t-wait" {...fade} transition={{ duration: 0.7, ease }} className="md:-mt-[6%]">
-                <p className="font-script text-6xl leading-none text-[color:var(--color-bark)]">{home.meme.waitScript}</p>
+                <p className="font-script text-5xl leading-none text-[color:var(--color-bark)]">{home.meme.waitScript}</p>
                 <p className="tracked-label mt-4">{home.meme.waitLabel}</p>
               </motion.div>
             )}
