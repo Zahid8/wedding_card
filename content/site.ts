@@ -59,9 +59,9 @@ export const events: readonly WeddingEvent[] = [
       "Inam Vihar",
       "Q728, Chowk, beside Sabhapur, Sarad City",
       "Ghaziabad, Uttar Pradesh 201102",
-      "https://maps.app.goo.gl/xdrf39gD6iEx98Dg8",
-      28.7524674,
-      77.265702,
+      "https://maps.app.goo.gl/gfRPgw4FsfUBLsyW7",
+      28.752106,
+      77.266495,
     ),
   },
   {
